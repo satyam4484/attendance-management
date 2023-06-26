@@ -14,8 +14,10 @@ app.use(bodyParser.text())
 
 const userRouter = require('./src/apps/users/route');
 
-app.use('/',userRouter);
+app.use('/api/user',userRouter);
 
 app.listen(8000,()=>{
     console.log("listening to port 8000")
 })
+
+module.exports = app;
