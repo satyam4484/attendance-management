@@ -1,0 +1,21 @@
+
+# How to update latest changes from original repository
+git fetch
+git merge origin/main
+git pull
+
+# How to create a new branch and push it to the remote repository
+
+git clone <forked_repository_url>
+git remote add upstream <original_repository_url>
+git fetch upstream
+git checkout -b my-feature upstream/main
+git commit -m "Your commit message"
+git push origin my-feature
+
+# How to update your forked repository with the original repository
+
+git remote add upstream <original_repository_url>
+git fetch upstream
+git merge upstream/main
+git pull
