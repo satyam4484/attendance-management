@@ -19,5 +19,5 @@ const createUser = async (req,res) => {
         res.send({error});
     }
 }
-
+// adding a module exports 
 module.exports = {get,createUser}
