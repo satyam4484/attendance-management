@@ -1,6 +1,7 @@
 const mongoose = require("../../DB/connection")
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+require("dotenv").config()
 
 const userSchema = new mongoose.Schema({
     userType: {
@@ -13,12 +14,12 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        unique: true,
+        unique: [true, "Email already exists"],
         required: true,
     },
     contact: {
         type: String,
-        unique: true,
+        unique: [true, "Contact already exists"],
         min: [10, 'length must be 10 got {value}'],
         required: true
     },
@@ -34,14 +35,13 @@ const userSchema = new mongoose.Schema({
     }]
 });
 
-userSchema.methods.generateAuthToken = async function() {
-    try{
-        console.log(this._id);
-        const token = jwt.sign({_id:this.id},'mynameissatyamsinghadeveloper');
-        this.tokens = this.tokens.concat({token:token});
+userSchema.methods.generateAuthToken = async function () {
+    try {
+        const token = jwt.sign({ _id: this.id }, process.env.SECRET_KEY);
+        this.tokens = this.tokens.concat({ token: token });
         await this.save();
         return token;
-    }catch(error) {
+    } catch (error) {
         console.log(error)
     }
 }
@@ -52,4 +52,5 @@ userSchema.pre("save", async function (next) {
     next();
 })
 
-module.exports = mongoose.model("user", userSchema);
+
+module.exports = mongoose.model("user", userSchema)

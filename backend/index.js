@@ -13,7 +13,7 @@ app.use(bodyParser.raw())
 app.use(bodyParser.text())
 
 const userRouter = require('./src/apps/users/route');
-
+// console.log(require('crypto').randomBytes(256).toString('base64'))
 app.use('/api/user',userRouter);
 
 app.listen(8000,()=>{
