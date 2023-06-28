@@ -13,9 +13,9 @@ app.use(bodyParser.raw())
 app.use(bodyParser.text())
 
 const userRouter = require('./src/apps/users/route');
-// console.log(require('crypto').randomBytes(256).toString('base64'))
+const Department = require('./src/apps/Departments/route');
 app.use('/api/user',userRouter);
-
+app.use('/api/department',Department);
 app.listen(8000,()=>{
     console.log("listening to port 8000")
 })
