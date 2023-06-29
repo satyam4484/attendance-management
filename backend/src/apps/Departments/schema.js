@@ -1,16 +1,40 @@
 const mongoose = require("../../DB/connection")
 
 const departmentSchema = new mongoose.Schema({
-    organization:{
+    organization: {
+        type: String,
+        required: true
+    },
+    name: {
+        type: String,
+        required: true,
+        unique: true
+    }
+});
+
+const semesterShema = new mongoose.Schema({
+    sem_name: {
+        type: String,
+        unique: true,
+        required: true
+    }
+});
+
+
+const batchShema = new mongoose.Schema({
+    sem:{
         type:String,
         required:true
     },
-    name:{
+    year:{
         type:String,
-        required:true,
-        unique:true
+        required:true
     }
-})
+});
 
 
-module.exports = mongoose.model("department",departmentSchema);
+
+module.exports = { Department: mongoose.model("department", departmentSchema), 
+                   Sem: mongoose.model("semester", semesterShema) ,
+                   Batch : mongoose.model("batch",batchShema)
+                };

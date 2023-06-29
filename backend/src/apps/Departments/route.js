@@ -3,7 +3,8 @@ const router = express.Router();
 const department = require("./service")
 const verifyToken = require("../../middleware/verifyToken");
 
-router.route('/add').post(verifyToken,department.addDepartment)
+router.route('/add').post(verifyToken,department.addDepartment);
+// router.post('/add',department.addSem);
 
 // router.post('/create',user.createUser);
 // router.post('/login',user.loginUser);

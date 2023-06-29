@@ -1,4 +1,4 @@
-const Department = require("./schema");
+const {Department,Sem} = require("./schema");
 const { Response } = require("../users/service");
 
 
@@ -16,4 +16,15 @@ const addDepartment = async (req, res) => {
     }
 }
 
-module.exports = {addDepartment};
+
+const addSem = async (req,res) => {
+    try{
+        const sem = await new Sem(req.body).save();
+        res.send(Response(false,"Semester Added",sem));        
+    }catch(error) {
+        console.log("error in adding semester");
+        res.send(Response(true,error.message))
+    }
+}
+
+module.exports = {addDepartment,addSem};
