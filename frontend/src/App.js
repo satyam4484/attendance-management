@@ -1,6 +1,14 @@
+import './assests/css/main.css'
+import Signin from './Components/Forms/Signin';
+import Signup from './Components/Forms/Signup';
+import { Routes, Route } from 'react-router-dom';
+
 const App = () => {
     return (
-        <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum quibusdam mollitia iste velit nihil est dolore excepturi laboriosam repellat ea quae, ab molestiae, dolorum dolor quos rem eaque commodi. Excepturi.</h1>
+        <Routes>
+            <Route path="signup" element={<Signup />} />
+            <Route path="signin" element={<Signin />} />
+        </Routes>
     )
 };
 
