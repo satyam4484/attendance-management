@@ -1,10 +1,17 @@
 
-# How to update latest changes from original repository
+# Push new changes to repository
+
+git add .
+git commit -m "message"
+git push origin abhijeet
+
+# Fetch latest changes from original repository
+
 git fetch
 git merge origin/master
 git pull
 
-# How to create a new branch and push it to the remote repository
+# Create a new branch and push it to the remote repository
 
 git clone <forked_repository_url>
 git remote add upstream <original_repository_url>
@@ -13,7 +20,7 @@ git checkout -b my-feature upstream/master
 git commit -m "Your commit message"
 git push origin my-feature
 
-# How to update your forked repository with the original repository
+# Update your forked repository with the original repository
 
 git remote add upstream <original_repository_url>
 git fetch upstream
