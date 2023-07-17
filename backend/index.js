@@ -6,7 +6,6 @@ require("./src/DB/connection")
 require("./src/schema");
 
 
-
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
 app.use(bodyParser.raw())

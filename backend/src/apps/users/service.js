@@ -17,7 +17,7 @@ const Response = (error, message = "", data = []) => {
 const getUser = async (req, res) => {
     try{
         const user = await User.findOne({ _id: req.user_id }, { password: 0 });
-        res.send(Response(false, "user found", user))
+        res.send(Response(false,"", user))
     }catch(error){
         res.send(Response(true, "Invalid User Please login again"))
     }
@@ -45,12 +45,14 @@ const loginUser = async (req, res) => {
     }
 }
 
+
+// create 
 const createUser = async (req, res) => {
     try {
         const data = req.body;
         if (data.password === data.confirmPassword) {
             const user = await new User(req.body);
-            // const token = await user.generateAuthToken();
+            // const token = await user.generateAuthToken();    
             const response = await user.save();
             res.status(201).send(Response(false, "Account created Sucessfully"));
         }else{
