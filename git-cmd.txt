@@ -14,7 +14,7 @@ git pull
 # Create a new branch and push it to the remote repository
 
 git clone <forked_repository_url>
-git remote add upstream <original_repository_url>
+git remote add upstream <original_repository_url> (https://github.com/satyam4484/attendance-management.git)
 git fetch upstream
 git checkout -b my-feature upstream/master
 git commit -m "Your commit message"
@@ -22,6 +22,6 @@ git push origin my-feature
 
 # Update your forked repository with the original repository
 
-git remote add upstream <original_repository_url>
+git remote add upstream <original_repository_url> (https://github.com/satyam4484/attendance-management.git)
 git fetch upstream
 git merge upstream/master
