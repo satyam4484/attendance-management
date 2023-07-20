@@ -1,9 +1,9 @@
-const mongoose = require("../../DB/connection")
+const {Schema,model} = require("mongoose");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+
 require("dotenv").config()
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
     userType: {
         type: Number,
         required: true,
@@ -29,16 +29,6 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-// userSchema.methods.generateAuthToken = async function () {
-//     try {
-//         const token = jwt.sign({ _id: this.id }, process.env.SECRET_KEY);
-//         this.tokens = this.tokens.concat({ token: token });
-//         await this.save();
-//         return token;
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
 
 userSchema.pre("save", async function (next) {
     if (this.isModified("password")) {
@@ -47,5 +37,4 @@ userSchema.pre("save", async function (next) {
     next();
 })
 
-
-module.exports = mongoose.model("user", userSchema)
+module.exports = model("user", userSchema);

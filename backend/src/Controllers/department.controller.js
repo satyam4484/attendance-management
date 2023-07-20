@@ -1,5 +1,6 @@
-const {Department,Sem} = require("./schema");
-const { Response } = require("../users/service");
+
+const {Department,Sem} = require("../models/department.model");
+const { Response } = require("../Controllers/user.controller");
 
 
 const addDepartment = async (req, res) => {

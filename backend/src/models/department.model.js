@@ -1,6 +1,8 @@
-const mongoose = require("../../DB/connection")
+const {model,Schema} = require("mongoose");
 
-const departmentSchema = new mongoose.Schema({
+
+
+const departmentSchema = new Schema({
     organization: {
         type: String,
         required: true
@@ -12,7 +14,7 @@ const departmentSchema = new mongoose.Schema({
     }
 });
 
-const semesterShema = new mongoose.Schema({
+const semesterShema = new Schema({
     sem_name: {
         type: String,
         unique: true,
@@ -21,7 +23,7 @@ const semesterShema = new mongoose.Schema({
 });
 
 
-const batchShema = new mongoose.Schema({
+const batchShema = new Schema({
     sem:{
         type:String,
         required:true
@@ -34,7 +36,7 @@ const batchShema = new mongoose.Schema({
 
 
 
-module.exports = { Department: mongoose.model("department", departmentSchema), 
-                   Sem: mongoose.model("semester", semesterShema) ,
-                   Batch : mongoose.model("batch",batchShema)
+module.exports = { Department: model("department", departmentSchema), 
+                   Sem:model("semester", semesterShema) ,
+                   Batch : model("batch",batchShema)
                 };

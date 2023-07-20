@@ -1,8 +1,7 @@
-const User = require("./schema");
+const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config()
-
 
 const generateAuthToken = (id)=> {
     return jwt.sign({ _id: id }, process.env.SECRET_KEY);
