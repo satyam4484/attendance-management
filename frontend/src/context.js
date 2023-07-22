@@ -1,5 +1,5 @@
 import React,{useReducer,useContext} from "react";
-import { globalReducer } from "./reducers/GlobalReducer";
+import { globalReducer } from "./Reducers/GlobalReducer";
 
 const AppContext = React.createContext();
 
