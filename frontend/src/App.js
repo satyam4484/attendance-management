@@ -1,4 +1,5 @@
-import './assests/css/main.css'
+// import './assets/css/main.css'
+import './assets/css/tailwind.css'
 import Signin from './Components/Forms/Signin';
 import Signup from './Components/Forms/Signup';
 import { Routes, Route } from 'react-router-dom';
