@@ -3,7 +3,6 @@ const bodyParser = require("body-parser")
 const app = express();
 require("dotenv").config()
 require("./src/DB/connection")
-// require("./src/schema");
 
 
 app.use(bodyParser.urlencoded({extended:true}))
@@ -12,7 +11,7 @@ app.use(bodyParser.raw())
 app.use(bodyParser.text())
 
 const userRouter = require("./src/Routes/user.routes");
-const Department = require('./src/Routes/department.routes');
+// const Department = require('./src/Routes/department.routes');
 
 app.use('/api/user',userRouter);
 // app.use('/api/department',Department);
