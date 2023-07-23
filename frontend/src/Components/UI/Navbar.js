@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom';
 import { useGlobalContext } from '../../context/Context';
 
 const Navbar = () => {
 
-  const { appName, clickEvent, currentSelected  } = useGlobalContext();
+  const { appName, clickEvent, currentSelected } = useGlobalContext();
 
   const navList = [
     {

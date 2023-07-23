@@ -1,4 +1,5 @@
-import './assets/css/main.css'
+// import './assets/css/main.css'
+import './assets/css/tailwind.css'
 import './assets/css/fonts.css'
 import { useLocation } from "react-router-dom";
 import Navbar from "./Components/UI/Navbar";

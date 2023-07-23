@@ -64,10 +64,14 @@ const SignUp = () => {
                         </div>
 
                     </form>
-                    <div className="pt-8 text-center">
+                    <div className="flex flex-col flex-grow justify-end items-center">
                         <p className="text-sm">Already have an account?</p>
-                        <Link to="/auth/signin" className="font-bold text-blue-700 hover:text-blue-800 transition-colors">Login</Link>{" "}
-                        <span className="text-sm">Now</span>
+                        <p>
+                            <Link to="/auth/signin" className="font-bold text-blue-700 hover:text-blue-800 transition-colors">Login</Link>{" "}
+                            <span className="text-sm">Now</span>
+                        </p>
+
+                        <p className="text-xs mt-10 text-gray-400">Go back to <Link to="/" className="underline underline-offset-2">Home</Link> </p>
                     </div>
                 </div>
                 <div className="hidden md:block overflow-hidden rounded-r-2xl md:w-1/2">
