@@ -73,6 +73,12 @@ cd ../backend
 npm install
 ```
 
+3. Install Tailwind CSS: 
+
+```bash
+npm install -D tailwindcss
+```
+
 ## Setup
 
 To run the Attendance Management System on your local machine, follow these steps:
