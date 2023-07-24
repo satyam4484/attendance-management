@@ -1,30 +1,21 @@
 import React, { lazy, Suspense } from "react";
 import { Route, Routes, Outlet } from "react-router-dom";
-import Spinner from "../Components/UI/Spinner";
 
+
+const Spinner = lazy(() => import('../Components/UI/Spinner'));
+const Homepage = lazy(() => import('../Components/UI/Homepage'));
+const SignUp = lazy(() => import('../Components/Forms/SignUp'));
+const SignIn = lazy(() => import('../Components/Forms/SignIn'));
 
 const Routing = () => {
   return (
     <Suspense fallback={<Spinner />}>
       <Routes>
-        {/* <Route path="/auth" element={<Outlet />}>
-          <Route path="signup" element={<Signup />} />
-          <Route path="login" element={<Login />} />
-          <Route path="reset-password" element={<Recovery/>} />
+        <Route path="/" exact element={<Homepage />} />
+        <Route path="/auth" element={<Outlet />}>
+          <Route path="signup" element={<SignUp />} />
+          <Route path="signin" element={<SignIn />} />
         </Route>
-        <Route path="/jobs" element={<Jobs />} />
-        <Route path="/jobs/:id" element={<JobsDetails />} />
-        <Route path="/jobs/organization=:org" element={<OrganizationJob />} />
-        <Route path="/profile" element={<Outlet />} >
-          <Route path=":user" element={<Profile/>}/>
-          <Route path=":user/jobPrefernce" element={<JobPreference/>}/>
-        </Route> */}
-        {/* <Route path="/profile/:user" element={<Profile />} /> */}
-        {/* <Route path="/company" element={<Outlet />}>
-          <Route path=":user" element={<Company />} />
-          <Route path=":user/jobsposted/:slug" element={<CompanyJobDetails />} />
-        </Route>
-        <Route path="/" element={<Landing/>}/> */}
       </Routes>
     </Suspense>
   );
