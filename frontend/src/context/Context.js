@@ -1,12 +1,12 @@
 import React, { createContext, useReducer, useContext } from "react";
-import { reducer, initialState } from "../reducers/Reducer";
+import { globalReducer, initialState } from "../reducers/GlobalReducer";
 
 const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(globalReducer, initialState);
 
-  const appName = "Attendify";
+  const appName = "SoundRoll";
 
   const clickEvent = (index) => {
     dispatch({ type: "SET_CURRENT_SELECTED", payload: index });
