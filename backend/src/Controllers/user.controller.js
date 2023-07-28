@@ -2,14 +2,12 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { User, Contact } = require("../models/user.model");
 const { sendMail } = require("../services/mail");
-const otpGenerator = require('otp-generator');
+const otpGenerator = require("otp-generator");
 require("dotenv").config();
 
 // VocalMark
 
-
-
-
+// services
 const generateAuthToken = (id) => {
   return jwt.sign({ _id: id }, process.env.SECRET_KEY);
 };
@@ -18,6 +16,7 @@ const Response = (error, message = "", data = []) => {
   return { error, message, data };
 };
 
+// validations
 const checkEmailValid = async (req, res) => {
   try {
     const email = await User.findOne({ email: req.body.email });
@@ -44,43 +43,88 @@ const checkPhone = async (req, res) => {
   }
 };
 
-const generateOtp = async (req,res)=> {
-  try{
-    const user = await User.findOne({email:req.body.email});
-    if(user) {
-      const otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
-      
-      const updatedUser = await User.findOneAndUpdate({_id:user._id},{$set:{otp:otp}},{new:true});
-      sendMail(updatedUser.name,updatedUser.otp);
-      res.send(Response(false,"Otp send to mail",{user_id:updatedUser._id}));
-      
-    }else{
+// contact apis
+const getUserContact = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const contact = await User.findOne({_id: id }).populate('contact');
+    if (contact) {
+      res.send(Response(false, "", contact.contact));
+    } else {
+      throw "User Contact Details not found";
+    }
+  } catch (error) {
+    res.send(Response(true, error));
+  }
+};
+
+
+const editUserContact = async (req, res) => {
+  try {
+    const data = req.body;
+    const contact = await Contact.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: data },
+      { new: true }
+    );
+
+    if (contact) {
+      res.send(Response(false,"",contact));
+    } else {
+      throw "User Contact Details not found";
+    }
+  } catch (error) {
+    console.log(error);
+    res.send(Response(true, error));
+  }
+};
+
+const generateOtp = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (user) {
+      const otp = otpGenerator.generate(6, {
+        upperCaseAlphabets: false,
+        specialChars: false,
+      });
+
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: user._id },
+        { $set: { otp: otp } },
+        { new: true }
+      );
+      sendMail(updatedUser.name, updatedUser.otp);
+      res.send(
+        Response(false, "Otp send to mail", { user_id: updatedUser._id })
+      );
+    } else {
       throw "Enter a valid email";
     }
-  }catch(error) {
-    res.send(Response(true,error));
+  } catch (error) {
+    res.send(Response(true, error));
   }
-}
+};
 
-
-const verifyOtp =async (req,res) => {
-  try{
-    const user =await  User.findOne({_id:req.body.user_id});
-    if(user) {
-      if(user.otp === req.body.otp) {
-        const updatedUser = await User.findOneAndUpdate({_id:user._id},{$set:{is_verified:true}});
-        res.send(Response(false,"Otp verified successfully"));
-      }else{
+const verifyOtp = async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.body.user_id });
+    if (user) {
+      if (user.otp === req.body.otp) {
+        const updatedUser = await User.findOneAndUpdate(
+          { _id: user._id },
+          { $set: { is_verified: true } }
+        );
+        res.send(Response(false, "Otp verified successfully"));
+      } else {
         throw "Invalid Otp! Try again";
       }
-    }else{
+    } else {
       throw "Invalid Email ! Try again";
     }
-
-  }catch(error) {
-    res.send(Response(true,error));
+  } catch (error) {
+    res.send(Response(true, error));
   }
-}
+};
 
 const getUser = async (req, res) => {
   try {
@@ -132,12 +176,11 @@ const createUser = async (req, res) => {
         password: data.password,
       });
 
-
       const response = await user.save();
 
       // send the mail to user if account is created
-      if(response) {
-        sendMail(response.name,response.otp);
+      if (response) {
+        sendMail(response.name, response.otp);
       }
       res.status(201).send(Response(false, "Account created Sucessfully"));
     } else {
@@ -176,13 +219,14 @@ module.exports = {
   checkPhone,
   updateUser,
   verifyOtp,
-  generateOtp
+  generateOtp,
+  getUserContact,
+  editUserContact
 };
 
 // 1-> organization
 // 2-> department
 // 3-> students
-
 
 /* 
 
