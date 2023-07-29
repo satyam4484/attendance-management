@@ -1,8 +1,10 @@
 const bcrypt = require("bcryptjs");
 const { User, Contact } = require("../models/user.model");
+const { Teacher } = require("../models/department.model");
+
 const { sendMail } = require("../services/mail");
 const otpGenerator = require("otp-generator");
-const {Response,generateAuthToken}  = require("../services/services");
+const { Response, generateAuthToken } = require("../services/services");
 require("dotenv").config();
 
 // VocalMark
@@ -39,7 +41,7 @@ const checkPhone = async (req, res) => {
 const getUserContact = async (req, res) => {
   try {
     const id = req.user._id;
-    const contact = await User.findOne({_id: id }).populate('contact');
+    const contact = await User.findOne({ _id: id }).populate('contact');
     if (contact) {
       res.send(Response(false, "", contact.contact));
     } else {
@@ -54,7 +56,6 @@ const getUserContact = async (req, res) => {
 const editUserContact = async (req, res) => {
   try {
     const data = req.body;
-    console.log(req.user)
     const contact = await Contact.findOneAndUpdate(
       { _id: req.user.contact },
       { $set: data },
@@ -62,7 +63,7 @@ const editUserContact = async (req, res) => {
     );
 
     if (contact) {
-      res.send(Response(false,"",contact));
+      res.send(Response(false, "", contact));
     } else {
       throw "User Contact Details not found";
     }
@@ -134,13 +135,13 @@ const getUser = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const data = req.body;
-    const user = await User.find({ email: data.email });
+    const user = await User.findOne({ email: data.email });
     if (user) {
-      const value = await bcrypt.compare(data.password, user[0].password);
+      const value = await bcrypt.compare(data.password, user.password);
       if (value) {
         res.send(
           Response(false, "", {
-            token: generateAuthToken(user[0]._id),
+            token: generateAuthToken(user._id),
           })
         );
       } else {
@@ -170,16 +171,27 @@ const createUser = async (req, res) => {
       });
 
       const response = await user.save();
-
       // send the mail to user if account is created
       if (response) {
+
+        // create a teacher account
+        if (response.userType === 2) {
+          const newTeacher = await Teacher.create({
+            user: response._id
+          });
+          await newTeacher.save();
+        }
+
         sendMail(response.name, response.otp);
+        res.status(201).send(Response(false, "Account created Sucessfully"));
+      } else {
+        throw "Something went wrong try again";
       }
-      res.status(201).send(Response(false, "Account created Sucessfully"));
     } else {
       throw "Password Didn't match";
     }
   } catch (error) {
+    console.log(error);
     res.send(Response(true, error));
   }
 };

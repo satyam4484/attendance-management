@@ -24,13 +24,16 @@ const departmentSchema = new Schema({
 });
 
 
-const Teacher = new Schema({
+const TeacherSchema = new Schema({
     user:{
         type:Schema.Types.ObjectId,
         ref:'User',
         required:true
     },
-    subjects:[subjectSchema]
+    subjects:[{
+      type:Schema.Types.ObjectId,
+      ref:'Subject'
+    }]
 });
 
 const subjectSchema = new Schema({
@@ -65,8 +68,9 @@ const batchSchema = new Schema({
   },
 });
 
-const Batch = mongoose.model("Batch", batchSchema);
+const Batch = model("Batch", batchSchema);
 const Department = model("Department", departmentSchema);
 const Subject = model("Subject", subjectSchema);
+const Teacher = model("Teacher",TeacherSchema);
 
 module.exports = { Department, Subject,Batch,Teacher };
