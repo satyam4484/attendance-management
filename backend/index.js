@@ -12,9 +12,11 @@ app.use(bodyParser.text())
 
 const userRouter = require("./src/Routes/user.routes");
 const organizationRouter = require('./src/Routes/organization.routes');
+const departmentRouter = require('./src/Routes/department.routes');
 
 app.use('/api/user',userRouter);
 app.use('/api/organization',organizationRouter);
+app.use('/api/department',departmentRouter);
 
 app.listen(8000,()=>{
     console.log("listening to port 8000")
