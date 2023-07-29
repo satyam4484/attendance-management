@@ -28,6 +28,10 @@ const organizationSchema = new Schema({
   },
 });
 
+
+
+
+
 module.exports = {
   Organization: model("organization", organizationSchema),
 };
