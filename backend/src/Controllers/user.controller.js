@@ -1,20 +1,12 @@
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const { User, Contact } = require("../models/user.model");
 const { sendMail } = require("../services/mail");
 const otpGenerator = require("otp-generator");
+const {Response,generateAuthToken}  = require("../services/services");
 require("dotenv").config();
 
 // VocalMark
 
-// services
-const generateAuthToken = (id) => {
-  return jwt.sign({ _id: id }, process.env.SECRET_KEY);
-};
-
-const Response = (error, message = "", data = []) => {
-  return { error, message, data };
-};
 
 // validations
 const checkEmailValid = async (req, res) => {
@@ -46,7 +38,7 @@ const checkPhone = async (req, res) => {
 // contact apis
 const getUserContact = async (req, res) => {
   try {
-    const id = req.params.id;
+    const id = req.user._id;
     const contact = await User.findOne({_id: id }).populate('contact');
     if (contact) {
       res.send(Response(false, "", contact.contact));
@@ -62,8 +54,9 @@ const getUserContact = async (req, res) => {
 const editUserContact = async (req, res) => {
   try {
     const data = req.body;
+    console.log(req.user)
     const contact = await Contact.findOneAndUpdate(
-      { _id: req.params.id },
+      { _id: req.user.contact },
       { $set: data },
       { new: true }
     );
@@ -129,7 +122,7 @@ const verifyOtp = async (req, res) => {
 const getUser = async (req, res) => {
   try {
     const user = await User.findOne(
-      { _id: req.user_id },
+      { _id: req.user._id },
       { password: 0, otp: 0 }
     ).populate("contact");
     res.send(Response(false, "", user));
@@ -227,12 +220,3 @@ module.exports = {
 // 1-> organization
 // 2-> department
 // 3-> students
-
-/* 
-
-create user -> 
-  1. get basic details
-  2. get contact details
-  3. create user and send otp to respected mail for verification
-
-  */

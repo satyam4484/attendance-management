@@ -22,7 +22,7 @@ router.post("/verify-otp", verifyOtp);
 router.post('/generate-otp',generateOtp);
 
 router.post("/create", createUser);
-router.route("/update/:id").patch(verifyToken, updateUser);
+router.route("/update").patch(verifyToken, updateUser);
 router.post("/login", loginUser);
 // // method for adding a middle ware
 router.route("/").get(verifyToken, getUser);
@@ -30,7 +30,7 @@ router.route("/").get(verifyToken, getUser);
 
 // contact apis
 
-router.route('/contact/:id').get(verifyToken,getUserContact);
-router.route('/contact/update/:id').patch(verifyToken,editUserContact);
+router.route('/contact').get(verifyToken,getUserContact);
+router.route('/contact').patch(verifyToken,editUserContact);
 
 module.exports = router;

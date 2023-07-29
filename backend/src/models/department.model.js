@@ -69,4 +69,4 @@ const Batch = mongoose.model("Batch", batchSchema);
 const Department = model("Department", departmentSchema);
 const Subject = model("Subject", subjectSchema);
 
-module.exports = { Department, Subject,Batch };
+module.exports = { Department, Subject,Batch,Teacher };
