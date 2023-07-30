@@ -1,5 +1,6 @@
 const express = require("express");
-const bodyParser = require("body-parser")
+const bodyParser = require("body-parser");
+const cors = require('cors');
 const app = express();
 require("dotenv").config()
 require("./src/DB/connection")
@@ -14,6 +15,9 @@ const userRouter = require("./src/Routes/user.routes");
 const organizationRouter = require('./src/Routes/organization.routes');
 const departmentRouter = require('./src/Routes/department.routes');
 
+app.use(cors({
+    origin: '*'
+}));
 app.use('/api/user',userRouter);
 app.use('/api/organization',organizationRouter);
 app.use('/api/department',departmentRouter);
