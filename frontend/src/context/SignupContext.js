@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useReducer } from 'react';
 import { signupReducer, initialStateSignup } from '../reducers/SignupReducer';
-import { getUser } from '../network/agent';
 
 const SignupContext = createContext();
 

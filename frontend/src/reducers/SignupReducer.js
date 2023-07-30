@@ -1,6 +1,6 @@
 export const initialStateSignup = {
     email: { value: "", touched: false, hasError: false, error: "" },
-    password: { value: "", touched: false, hasError: false, error: "" },
+    password: { value: "", touched: false, hasError: false, error: "", type: "password" },
     confirmPassword: { value: "", touched: false, hasError: false, error: "" },
     formValid: false,
     userType: 1,
@@ -50,7 +50,7 @@ export const signupReducer = (state, action) => {
                     [action.payload.key]: {
                         ...state[action.payload.key],
                         hasError: true,
-                        error: `${action.data.placeholder} must be like user@gmail.com`
+                        error: `Email must be like user@gmail.com !`
                     }
                 }
             }
@@ -66,6 +66,17 @@ export const signupReducer = (state, action) => {
                 }
             }
 
+            if (action.payload.key === 'confirmPassword' && action.payload.value !== state.password.value) {
+                return {
+                    ...state,
+                    [action.payload.key]: {
+                        ...state[action.payload.key],
+                        hasError: true,
+                        error: `Passwords do not match!`
+                    }
+                }
+            }
+
         case 'SIGNUP_VALID_DATA':
             if (state[action.payload.key].hasError) return state;
             return {
@@ -77,10 +88,19 @@ export const signupReducer = (state, action) => {
                 }
             }
 
+        case "SIGNUP_TOGGLE_PASSWORD_VISIBILITY":
+            return {
+                ...state,
+                password: {
+                    ...state.password,
+                    type: state.password.type === "password" ? "text" : "password"
+                }
+            };
+
         case 'CLEAR_SIGNUP_FORM':
             state = initialStateSignup;
             return state;
-            
+
         default:
             return state
     }
