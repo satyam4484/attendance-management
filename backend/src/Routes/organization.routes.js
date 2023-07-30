@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-const { createOrganization,updateOrganization } = require("../Controllers/organization.controller");
+const organization= require("../Controllers/organization.controller");
 const verifyToken = require("../middleware/verifyToken");
 
-router.route('/').post(verifyToken,createOrganization);
-router.route('/').patch(verifyToken,updateOrganization);
+router.route('/').post(verifyToken,organization.createOrganization);
+router.route('/').patch(verifyToken,organization.updateOrganization);
 
 module.exports = router;

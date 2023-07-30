@@ -4,7 +4,7 @@ const { Response } = require("../services/services");
 
 // Create a POST endpoint to insert a new organization
 
-const createOrganization = async (req, res) => {
+module.exports.createOrganization = async (req, res) => {
     try {
         if (req.user.userType == 1) {
             const data = req.body;
@@ -21,7 +21,7 @@ const createOrganization = async (req, res) => {
     }
 };
 
-const updateOrganization = async (req, res) => {
+module.exports.updateOrganization = async (req, res) => {
     try {
         const updatedOrg = await Organization.findOneAndUpdate(
             { user: req.user._id },
@@ -36,8 +36,4 @@ const updateOrganization = async (req, res) => {
     } catch (error) {
         res.send(Response(true, "Failed to update organization"));
     }
-}
-module.exports = {
-    createOrganization,
-    updateOrganization
 }

@@ -1,36 +1,25 @@
 const express = require("express");
 const router = express.Router();
 
-const {
-  getUser,
-  createUser,
-  loginUser,
-  checkEmailValid,
-  checkPhone,
-  updateUser,
-  verifyOtp,
-  generateOtp,
-  getUserContact,
-  editUserContact
-} = require("../Controllers/user.controller");
+const user = require("../Controllers/user.controller");
+
+const validate = require("../services/validation");
+const service = require("../services/services");
 
 const verifyToken = require("../middleware/verifyToken");
 
-router.post("/validate_email", checkEmailValid);
-router.post("/validate_contact", checkPhone);
-router.post("/verify-otp", verifyOtp);
-router.post('/generate-otp',generateOtp);
+router.post("/validate_email", validate.checkEmailValid);
+router.post("/validate_contact", validate.checkPhone);
+router.post("/verify-otp", service.verifyOtp);
+router.post('/generate-otp',service.generateOtp);
 
-router.post("/create", createUser);
-router.route("/update").patch(verifyToken, updateUser);
-router.post("/login", loginUser);
-// // method for adding a middle ware
-router.route("/").get(verifyToken, getUser);
+router.post("/create", user.createUser);
+router.route("/update").patch(verifyToken, user.updateUser);
+router.post("/login", user.loginUser);
+router.route("/").get(verifyToken, user.getUser);
 
 
-// contact apis
-
-router.route('/contact').get(verifyToken,getUserContact);
-router.route('/contact').patch(verifyToken,editUserContact);
+router.route('/contact').get(verifyToken,user.getUserContact);
+router.route('/contact').patch(verifyToken,user.editUserContact);
 
 module.exports = router;
