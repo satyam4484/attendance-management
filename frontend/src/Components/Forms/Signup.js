@@ -1,36 +1,10 @@
 import React from "react";
 import signupBanner from "../../assets/images/signupBanner.png";
 import { Link } from "react-router-dom";
-import Icon from "../UI/Icon";
+import InputField from "./Units/InputField";
+import UserType from "./Units/UserType";
 
 const SignUp = () => {
-
-    const formFields = [
-        {
-            id: "email-icon",
-            icon: <Icon name="Mail" color="#1c1c1c" size="22" />,
-            type: "email",
-            placeholder: "Email",
-        },
-        {
-            id: "name-icon",
-            icon: <Icon name="User" color="#1c1c1c" size="22" />,
-            type: "text",
-            placeholder: "Name",
-        },
-        {
-            id: "pass-icon",
-            icon: <Icon name="Lock" color="#1c1c1c" size="22" />,
-            type: "password",
-            placeholder: "Password",
-        },
-        {
-            id: "confirm-pass-icon",
-            icon: <Icon name="Lock" color="#1c1c1c" size="22" />,
-            type: "password",
-            placeholder: "Confirm Password",
-        },
-    ];
 
     return (
         <div className="h-screen flex items-center justify-center">
@@ -40,19 +14,9 @@ const SignUp = () => {
 
                     <form className="w-full space-y-4">
 
-                        {formFields.map((field) => (
-                            <div key={field.id} className="relative mb-4">
-                                <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-[#1C1C1C]">
-                                    {field.icon}
-                                </div>
-                                <input
-                                    type={field.type}
-                                    id={field.id}
-                                    className="block outline-none rounded-2xl bg-[#F0EDFF] w-full pl-12 p-2.5 text-sm placeholder:text-[#1C1C1C]"
-                                    placeholder={field.placeholder}
-                                />
-                            </div>
-                        ))}
+                        <InputField />
+
+                        <UserType />
 
                         <div className="flex justify-center">
                             <button
@@ -64,7 +28,7 @@ const SignUp = () => {
                         </div>
 
                     </form>
-                    <div className="flex flex-col flex-grow justify-end items-center">
+                    <div className="flex flex-col flex-grow justify-end items-center mt-10">
                         <p className="text-sm">Already have an account?</p>
                         <p>
                             <Link to="/auth/signin" className="font-bold text-blue-700 hover:text-blue-800 transition-colors">Login</Link>{" "}

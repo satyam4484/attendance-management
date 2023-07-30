@@ -3,6 +3,7 @@ const bodyParser = require("body-parser")
 const app = express();
 require("dotenv").config()
 require("./src/DB/connection")
+const cors = require('cors');
 
 
 app.use(bodyParser.urlencoded({extended:true}))
@@ -15,6 +16,9 @@ const organizationRouter = require('./src/Routes/organization.routes');
 
 app.use('/api/user',userRouter);
 app.use('/api/organization',organizationRouter);
+app.use(cors({
+    origin: '*'
+}));
 
 app.listen(8000,()=>{
     console.log("listening to port 8000")
