@@ -1,45 +1,17 @@
 const bcrypt = require("bcryptjs");
 const { User, Contact } = require("../models/user.model");
+const { Teacher } = require("../models/department.model");
+
 const { sendMail } = require("../services/mail");
-const otpGenerator = require("otp-generator");
-const {Response,generateAuthToken}  = require("../services/services");
+const { Response, generateAuthToken,generateOtp,verifyOtp } = require("../services/services");
+const {checkEmailValid,checkPhone} = require("../services/validation");
+
 require("dotenv").config();
 
-// VocalMark
-
-
-// validations
-const checkEmailValid = async (req, res) => {
-  try {
-    const email = await User.findOne({ email: req.body.email });
-    if (email) {
-      throw "Email Already taken! Please try different one";
-    } else {
-      res.send(Response(false));
-    }
-  } catch (error) {
-    res.send(Response(true, error));
-  }
-};
-
-const checkPhone = async (req, res) => {
-  try {
-    const phone = await Contact.findOne({ phoneNumber: req.body.phoneNumber });
-    if (phone) {
-      throw "phoneNumber already taken! Please try different one";
-    } else {
-      res.send(Response(false));
-    }
-  } catch (error) {
-    res.send(Response(true, error));
-  }
-};
-
-// contact apis
-const getUserContact = async (req, res) => {
+module.exports.getUserContact = async (req, res) => {
   try {
     const id = req.user._id;
-    const contact = await User.findOne({_id: id }).populate('contact');
+    const contact = await User.findOne({ _id: id }).populate('contact');
     if (contact) {
       res.send(Response(false, "", contact.contact));
     } else {
@@ -51,10 +23,9 @@ const getUserContact = async (req, res) => {
 };
 
 
-const editUserContact = async (req, res) => {
+module.exports.editUserContact = async (req, res) => {
   try {
     const data = req.body;
-    console.log(req.user)
     const contact = await Contact.findOneAndUpdate(
       { _id: req.user.contact },
       { $set: data },
@@ -62,7 +33,7 @@ const editUserContact = async (req, res) => {
     );
 
     if (contact) {
-      res.send(Response(false,"",contact));
+      res.send(Response(false, "", contact));
     } else {
       throw "User Contact Details not found";
     }
@@ -72,54 +43,10 @@ const editUserContact = async (req, res) => {
   }
 };
 
-const generateOtp = async (req, res) => {
-  try {
-    const user = await User.findOne({ email: req.body.email });
-    if (user) {
-      const otp = otpGenerator.generate(6, {
-        upperCaseAlphabets: false,
-        specialChars: false,
-      });
 
-      const updatedUser = await User.findOneAndUpdate(
-        { _id: user._id },
-        { $set: { otp: otp } },
-        { new: true }
-      );
-      sendMail(updatedUser.name, updatedUser.otp);
-      res.send(
-        Response(false, "Otp send to mail", { user_id: updatedUser._id })
-      );
-    } else {
-      throw "Enter a valid email";
-    }
-  } catch (error) {
-    res.send(Response(true, error));
-  }
-};
 
-const verifyOtp = async (req, res) => {
-  try {
-    const user = await User.findOne({ _id: req.body.user_id });
-    if (user) {
-      if (user.otp === req.body.otp) {
-        const updatedUser = await User.findOneAndUpdate(
-          { _id: user._id },
-          { $set: { is_verified: true } }
-        );
-        res.send(Response(false, "Otp verified successfully"));
-      } else {
-        throw "Invalid Otp! Try again";
-      }
-    } else {
-      throw "Invalid Email ! Try again";
-    }
-  } catch (error) {
-    res.send(Response(true, error));
-  }
-};
 
-const getUser = async (req, res) => {
+module.exports.getUser = async (req, res) => {
   try {
     const user = await User.findOne(
       { _id: req.user._id },
@@ -131,16 +58,16 @@ const getUser = async (req, res) => {
   }
 };
 
-const loginUser = async (req, res) => {
+module.exports.loginUser = async (req, res) => {
   try {
     const data = req.body;
-    const user = await User.find({ email: data.email });
+    const user = await User.findOne({ email: data.email });
     if (user) {
-      const value = await bcrypt.compare(data.password, user[0].password);
+      const value = await bcrypt.compare(data.password, user.password);
       if (value) {
         res.send(
           Response(false, "", {
-            token: generateAuthToken(user[0]._id),
+            token: generateAuthToken(user._id),
           })
         );
       } else {
@@ -155,7 +82,7 @@ const loginUser = async (req, res) => {
 };
 
 // create
-const createUser = async (req, res) => {
+module.exports.createUser = async (req, res) => {
   try {
     const data = req.body;
     if (data.password === data.confirmPassword) {
@@ -170,21 +97,32 @@ const createUser = async (req, res) => {
       });
 
       const response = await user.save();
-
       // send the mail to user if account is created
       if (response) {
+
+        // create a teacher account
+        if (response.userType === 2) {
+          const newTeacher = await Teacher.create({
+            user: response._id
+          });
+          await newTeacher.save();
+        }
+
         sendMail(response.name, response.otp);
+        res.status(201).send(Response(false, "Account created Sucessfully"));
+      } else {
+        throw "Something went wrong try again";
       }
-      res.status(201).send(Response(false, "Account created Sucessfully"));
     } else {
       throw "Password Didn't match";
     }
   } catch (error) {
+    console.log(error);
     res.send(Response(true, error));
   }
 };
 
-const updateUser = async (req, res) => {
+module.exports.updateUser = async (req, res) => {
   try {
     const data = req.body;
     const user = await User.findOneAndUpdate(
@@ -203,19 +141,7 @@ const updateUser = async (req, res) => {
   }
 };
 
-module.exports = {
-  getUser,
-  createUser,
-  loginUser,
-  Response,
-  checkEmailValid,
-  checkPhone,
-  updateUser,
-  verifyOtp,
-  generateOtp,
-  getUserContact,
-  editUserContact
-};
+
 
 // 1-> organization
 // 2-> department

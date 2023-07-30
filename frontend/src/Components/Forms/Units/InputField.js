@@ -30,7 +30,6 @@ const InputField = () => {
                         value: data.message
                     }
                 });
-                // console.log(data);
             });
         }
     }
