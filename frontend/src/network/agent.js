@@ -1,7 +1,13 @@
 import axiosClient from "./apiClient.js";
 
-// this file contains all the api code
+export const validateEmail = (data) => {
+    return axiosClient().post('user/validate_email', JSON.stringify(data)).then(response => response.data)
+}
 
-export const email =() => {
-    return axiosClient().post('user/validate_email',{"email":"abhicaptain99@gmail.com"}).then(response => response.data);
+export const createUser = (data) => {
+    return axiosClient().post('user/create/', JSON.stringify(data)).then(response => response.data);
+}
+
+export const getUser = (data) => {
+    return axiosClient().get('user').then(response => response.data);
 }

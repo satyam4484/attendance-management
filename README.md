@@ -88,7 +88,7 @@ To run the Attendance Management System on your local machine, follow these step
 Create a `.env` file in the `backend` directory and add the following:
 
 ```bash
-MONGO_URI=your_mongodb_connection_string
+DATABASE=your_mongodb_connection_string
 SECRET_KEY=your_secret_key_for_jwt
 ```
 
