@@ -1,4 +1,5 @@
 export const initialStateSignup = {
+    name: { value: "", touched: false, hasError: false, error: "" },
     email: { value: "", touched: false, hasError: false, error: "" },
     password: { value: "", touched: false, hasError: false, error: "", type: "password" },
     confirmPassword: { value: "", touched: false, hasError: false, error: "" },
@@ -97,7 +98,15 @@ export const signupReducer = (state, action) => {
                 }
             };
 
-        case 'CLEAR_SIGNUP_FORM':
+        case "SIGNUP_FORM_VALID":
+            if (state.email.value.length > 0 && state.password.value.length > 0 && state.confirmPassword.value.length > 0) {
+                return {
+                    ...state,
+                    formValid: true
+                }
+            }
+
+        case 'SIGNUP_RESET':
             state = initialStateSignup;
             return state;
 

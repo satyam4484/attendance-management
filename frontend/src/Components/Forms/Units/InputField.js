@@ -1,14 +1,12 @@
-import React, { useReducer } from 'react'
-import { signupReducer, initialStateSignup } from "../../../reducers/SignupReducer";
+import React, { useEffect } from 'react'
 import { validateEmail } from "../../../network/agent";
 import Input from './Input';
 import Icon from "../../UI/Icon";
 import FieldError from './FieldError';
 
-const InputField = () => {
-    const [state, dispatch] = useReducer(signupReducer, initialStateSignup);
+const InputField = ({ state, dispatch }) => {
 
-    const { email, password, confirmPassword } = state;
+    const { name, email, password, confirmPassword } = state;
 
     const onFocusHandler = (e) => {
         dispatch({ type: "SIGNUP_INPUT_FOCUSED", payload: e.target.name });
@@ -51,8 +49,29 @@ const InputField = () => {
         dispatch({ type: "SIGNUP_TOGGLE_PASSWORD_VISIBILITY" });
     };
 
+
+    // useEffect(() => {
+    //     console.log("Form Data:", state);
+    // }, [state]);
+
     return (
         <>
+
+            <div className="relative mb-4">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-[#1C1C1C]">
+                    <Icon name="Mail" color="#1c1c1c" size="20" />
+                </div>
+                <Input
+                    type="text"
+                    name="name"
+                    value={name.value}
+                    placeholder="Name"
+                    onChange={valueChangeHandler}
+                    onFocus={onFocusHandler}
+                    onBlur={onBlurHandler}
+                />
+                <FieldError touched={name.touched} hasError={name.hasError} error={name.error} />
+            </div>
 
             <div className="relative mb-4">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-[#1C1C1C]">
@@ -74,7 +93,7 @@ const InputField = () => {
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-[#1C1C1C]">
                     <Icon name="Lock" color="#1c1c1c" size="20" />
                 </div>
-                
+
                 <div className="absolute inset-y-0 right-0 flex items-center pr-3.5 cursor-pointer text-[#1C1C1C]" onClick={togglePasswordVisibility} >
                     {password.type === "password" ? (
                         <Icon name="EyeOff" color="#1c1c1c" size="18" />

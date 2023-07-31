@@ -2,7 +2,7 @@ import React from 'react'
 
 const User = ({ inputId, labelId, value, name, checked, onChange, label }) => {
     return (
-        <li className="w-full border-b border-gray-200 sm:border-b-0 ">
+        <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
             <div className="flex items-center pl-3">
                 <input
                     id={inputId}

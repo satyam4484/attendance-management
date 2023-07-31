@@ -1,10 +1,37 @@
-import React from "react";
+import React, { useReducer } from "react";
 import signupBanner from "../../assets/images/signupBanner.png";
 import { Link } from "react-router-dom";
+import { signupReducer, initialStateSignup } from "../../reducers/SignupReducer";
 import InputField from "./Units/InputField";
 import UserType from "./Units/UserType";
+import { useGlobalContext } from "../../context/Context";
 
 const SignUp = () => {
+    const [state, dispatch] = useReducer(signupReducer, initialStateSignup);
+    const { toggleSpinner, setMessage } = useGlobalContext();
+
+    const { name, email, password, confirmPassword, formValid, userType } = state;
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (name.hasError || email.hasError || password.hasError || confirmPassword.hasError || formValid === false) {
+            // If there are errors in the form, do nothing
+            setMessage(true, "error", "Please fill out all fields correctly!");
+            return;
+        }
+        // Form is valid, proceed with the API call
+        toggleSpinner()
+
+        const formData = {
+            name: name.value,
+            email: email.value,
+            password: password.value,
+            confirmPassword: confirmPassword.value,
+            userType: userType,
+        };
+
+        console.log(formData);
+    }
 
     return (
         <div className="h-screen flex items-center justify-center">
@@ -12,11 +39,10 @@ const SignUp = () => {
                 <div className="flex flex-col items-center justify-center p-8 md:w-1/2">
                     <h1 className="uppercase font-extrabold text-3xl mb-6">Register</h1>
 
-                    <form className="w-full space-y-4">
+                    <form className="w-full space-y-4" onSubmit={handleSubmit}>
 
-                        <InputField />
-
-                        <UserType />
+                        <InputField state={state} dispatch={dispatch} />
+                        <UserType state={state} dispatch={dispatch} />
 
                         <div className="flex justify-center">
                             <button

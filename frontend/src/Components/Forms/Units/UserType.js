@@ -1,9 +1,8 @@
-import React, { useReducer } from "react";
-import { signupReducer, initialStateSignup } from "../../../reducers/SignupReducer";
+import React from "react";
 import User from "./User";
 
-const UserType = () => {
-    const [state, dispatch] = useReducer(signupReducer, initialStateSignup);
+const UserType = ({ state, dispatch }) => {
+
     const { userType } = state;
 
     const userTypeHandler = (e) => {
@@ -12,6 +11,7 @@ const UserType = () => {
 
     return (
         <>
+            <p className="text-xs text-center">Select User Type</p>
             <ul className="items-center w-full text-sm font-medium text-gray-900 bg-[#F0EDFF] rounded-2xl sm:flex">
 
                 <User
