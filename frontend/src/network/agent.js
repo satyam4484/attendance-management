@@ -1,7 +1,5 @@
 import axiosClient from "./apiClient.js";
 
-// this file contains all the api code
-
-export const email =() => {
-    return axiosClient().post('user/validate_email',{"email":"abhicaptain99@gmail.com"}).then(response => response.data);
+export const validateEmail = (data) => {
+    return axiosClient().post('user/validate_email', JSON.stringify(data)).then(response => response.data);
 }
