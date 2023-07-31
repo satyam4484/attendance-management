@@ -4,7 +4,7 @@ const initialState = {
   currentSelected: 0,
 };
 
-const globalReducer = (state, action) => {
+const reducer = (state, action) => {
   switch (action.type) {
       case "SET_CURRENT_SELECTED":
       return { ...state, currentSelected: action.payload };
@@ -13,4 +13,4 @@ const globalReducer = (state, action) => {
   }
 };
 
-export { globalReducer, initialState }
+export { reducer, initialState }
