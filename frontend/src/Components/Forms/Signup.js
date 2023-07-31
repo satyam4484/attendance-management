@@ -1,9 +1,41 @@
-import React from "react";
+import React, { useReducer } from "react";
 import signupBanner from "../../assets/images/signupBanner.png";
 import { Link } from "react-router-dom";
+<<<<<<< HEAD
+import { signupReducer, initialStateSignup } from "../../reducers/SignupReducer";
+import InputField from "./Units/InputField";
+import UserType from "./Units/UserType";
+import { useGlobalContext } from "../../context/Context";
+=======
 import Icon from "../UI/Icon";
+>>>>>>> f00f10bdf28e673a7e00dd93dae95c4cfbc75d7c
 
 const SignUp = () => {
+    const [state, dispatch] = useReducer(signupReducer, initialStateSignup);
+    const { toggleSpinner, setMessage } = useGlobalContext();
+
+    const { name, email, password, confirmPassword, formValid, userType } = state;
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (name.hasError || email.hasError || password.hasError || confirmPassword.hasError || formValid === false) {
+            // If there are errors in the form, do nothing
+            setMessage(true, "error", "Please fill out all fields correctly!");
+            return;
+        }
+        // Form is valid, proceed with the API call
+        toggleSpinner()
+
+        const formData = {
+            name: name.value,
+            email: email.value,
+            password: password.value,
+            confirmPassword: confirmPassword.value,
+            userType: userType,
+        };
+
+        console.log(formData);
+    }
 
     const formFields = [
         {
@@ -38,8 +70,12 @@ const SignUp = () => {
                 <div className="flex flex-col items-center justify-center p-8 md:w-1/2">
                     <h1 className="uppercase font-extrabold text-3xl mb-6">Register</h1>
 
-                    <form className="w-full space-y-4">
+                    <form className="w-full space-y-4" onSubmit={handleSubmit}>
 
+<<<<<<< HEAD
+                        <InputField state={state} dispatch={dispatch} />
+                        <UserType state={state} dispatch={dispatch} />
+=======
                         {formFields.map((field) => (
                             <div key={field.id} className="relative mb-4">
                                 <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-[#1C1C1C]">
@@ -53,6 +89,7 @@ const SignUp = () => {
                                 />
                             </div>
                         ))}
+>>>>>>> f00f10bdf28e673a7e00dd93dae95c4cfbc75d7c
 
                         <div className="flex justify-center">
                             <button
