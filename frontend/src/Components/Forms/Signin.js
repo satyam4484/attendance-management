@@ -57,7 +57,7 @@ const SignIn = () => {
             </div>
 
           </form>
-          <div className="flex flex-col flex-grow justify-end items-center">
+          <div className="flex flex-col flex-grow justify-end items-center pt-10">
             <p className="text-sm">Don't have an account?</p>
             <p>
               <Link to="/auth/signup" className="font-bold text-blue-700 hover:text-blue-800 transition-colors">Create New Account</Link>{" "}

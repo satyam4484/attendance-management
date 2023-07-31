@@ -1,16 +1,12 @@
 import React, { createContext, useReducer, useContext } from "react";
-<<<<<<< HEAD
-import { globalReducer, initialState } from "../reducers/GlobalReducer";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-=======
-import { reducer, initialState } from "../reducers/Reducer";
->>>>>>> f00f10bdf28e673a7e00dd93dae95c4cfbc75d7c
+import { globalReducer, initialState } from "../reducers/GlobalReducer";
 
 const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(globalReducer, initialState);
 
   const appName = "Attendify";
 

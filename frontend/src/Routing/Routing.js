@@ -3,8 +3,8 @@ import { Route, Routes, Outlet } from "react-router-dom";
 
 const Spinner = lazy(() => import('../Components/UI/Spinner'));
 const Homepage = lazy(() => import('../Components/UI/Homepage'));
-const SignUp = lazy(() => import('../Components/Forms/Signup'));
-const SignIn = lazy(() => import('../Components/Forms/Signin'));
+const SignUp = lazy(() => import('../Components/Forms/SignUp'));
+const SignIn = lazy(() => import('../Components/Forms/SignIn'));
 
 const Routing = () => {
   return (
