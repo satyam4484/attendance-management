@@ -5,7 +5,7 @@ const initialState = {
   error: { isError: false, message: "", type: "error" },
 };
 
-const globalReducer = (state, action) => {
+const reducer = (state, action) => {
   switch (action.type) {
     case "SET_NAV_LINK_CURRENT_SELECTED":
       return { ...state, currentSelected: action.payload };
@@ -29,4 +29,4 @@ const globalReducer = (state, action) => {
   }
 };
 
-export { globalReducer, initialState }
+export { reducer, initialState }
