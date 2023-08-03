@@ -23,3 +23,6 @@ router.route('/contact').get(verifyToken,user.getUserContact);
 router.route('/contact').patch(verifyToken,user.editUserContact);
 
 module.exports = router;
+
+
+// adding some comments 
