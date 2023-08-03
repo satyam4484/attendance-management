@@ -41,7 +41,8 @@ export const signupReducer = (state, action) => {
                         ...state[action.payload.key],
                         hasError: true,
                         error: `${action.payload.placeholder} field is required!`
-                    }
+                    },
+                    formValid: false
                 }
             }
 
@@ -52,7 +53,8 @@ export const signupReducer = (state, action) => {
                         ...state[action.payload.key],
                         hasError: true,
                         error: `Email must be like user@gmail.com !`
-                    }
+                    },
+                    formValid: false
                 }
             }
 
@@ -63,7 +65,8 @@ export const signupReducer = (state, action) => {
                         ...state[action.payload.key],
                         hasError: true,
                         error: `${action.payload.placeholder} must be at least 8 characters long!`
-                    }
+                    },
+                    formValid: false
                 }
             }
 
@@ -74,9 +77,15 @@ export const signupReducer = (state, action) => {
                         ...state[action.payload.key],
                         hasError: true,
                         error: `Passwords do not match!`
-                    }
+                    },
+                    formValid: false
                 }
             }
+
+            return {
+                ...state,
+                formValid: true // Set formValid to true when all validations pass
+            };
 
         case 'SIGNUP_VALID_DATA':
             if (state[action.payload.key].hasError) return state;
