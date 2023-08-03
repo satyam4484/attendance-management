@@ -18,16 +18,16 @@ The Attendance Management System is a MERN (MongoDB, Express.js, React.js, Node.
 
 ## Features
 
-- ***Voice input***: Teachers can use their voice to provide numeric inputs for marking attendance.
-- ***Attendance Marking***: Attendance for students can be marked efficiently using the voice inputs.
-- ***Secure Authentication***: The application employs secure authentication methods to ensure data privacy.
-- ***Dashboard***: Users have access to a personalized dashboard with relevant information and options.
-- ***Role-based Access Control***: Different user roles with appropriate access levels (e.g., College, Teacher, Student).
-- ***Admin Panel***: An admin panel will be available for managing college accounts, teacher accounts and student information.
-- ***Reports***: The system generates attendance reports for colleges and teachers to monitor student attendance within a selected date range.
-- ***Notifications***: Automated reminders and notifications to users for marking attendance.
-- ***Data Export***: Export attendance reports in various formats (CSV, Excel, etc.).
-- ***Responsive UI***: The application is designed to be responsive and accessible from various devices.
+- **_Voice input_**: Teachers can use their voice to provide numeric inputs for marking attendance.
+- **_Attendance Marking_**: Attendance for students can be marked efficiently using the voice inputs.
+- **_Secure Authentication_**: The application employs secure authentication methods to ensure data privacy.
+- **_Dashboard_**: Users have access to a personalized dashboard with relevant information and options.
+- **_Role-based Access Control_**: Different user roles with appropriate access levels (e.g., College, Teacher, Student).
+- **_Admin Panel_**: An admin panel will be available for managing college accounts, teacher accounts and student information.
+- **_Reports_**: The system generates attendance reports for colleges and teachers to monitor student attendance within a selected date range.
+- **_Notifications_**: Automated reminders and notifications to users for marking attendance.
+- **_Data Export_**: Export attendance reports in various formats (CSV, Excel, etc.).
+- **_Responsive UI_**: The application is designed to be responsive and accessible from various devices.
 
 ## Technologies
 
@@ -35,17 +35,17 @@ The Attendance Management System is built using the following technologies:
 
 - **Frontend**:
 
-  - React: *JavaScript library for building user interfaces.*
-  - Context API: *State management library for managing global application state.*
-  - HTML/CSS: *Markup and styling of the application.*
-  - Axios: *HTTP client for making API requests.*
+  - React: _JavaScript library for building user interfaces._
+  - Context API: _State management library for managing global application state._
+  - HTML/CSS: _Markup and styling of the application._
+  - Axios: _HTTP client for making API requests._
 
 - **Backend**:
-  - Node.js: *JavaScript runtime for server-side development.*
-  - Express: *Web framework for building APIs.*
-  - MongoDB: *NoSQL database for storing application data.*
-  - Mongoose: *MongoDB object modeling for Node.js.*
-  - JSON Web Tokens (JWT): *For user authentication and authorization.*
+  - Node.js: _JavaScript runtime for server-side development._
+  - Express: _Web framework for building APIs._
+  - MongoDB: _NoSQL database for storing application data._
+  - Mongoose: _MongoDB object modeling for Node.js._
+  - JSON Web Tokens (JWT): _For user authentication and authorization._
 
 ## Installation
 
@@ -73,12 +73,6 @@ cd ../backend
 npm install
 ```
 
-3. Install Tailwind CSS: 
-
-```bash
-npm install -D tailwindcss
-```
-
 ## Setup
 
 To run the Attendance Management System on your local machine, follow these steps:
@@ -88,11 +82,17 @@ To run the Attendance Management System on your local machine, follow these step
 Create a `.env` file in the `backend` directory and add the following:
 
 ```bash
-MONGO_URI=your_mongodb_connection_string
+DATABASE=your_mongodb_connection_string
 SECRET_KEY=your_secret_key_for_jwt
+EMAIL_USERNAME=your_email_address
+EMAIL_PASSWORD=your_email_password
 ```
 
-Replace `your_mongodb_connection_string` with your actual MongoDB connection string, and `your_secret_key_for_jwt` with a strong secret key for JWT (JSON Web Tokens) used in authentication.
+Replace `your_mongodb_connection_string` with your actual MongoDB connection string, and `your_secret_key_for_jwt` with a strong secret key for JWT (JSON Web Tokens) used in authentication. 
+
+Also, replace `your_email_address` and `your_email_password` with your actual email address and password created by Google account of resp email address. 
+
+The email address and password are used for sending automated emails to users.
 
 2. Start the backend server:
 
