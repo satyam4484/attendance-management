@@ -6,7 +6,6 @@ module.exports.createDepartment = async (req, res) => {
         if (req.user.userType == 1) {
             const data = req.body;
             const newDepartment = await Department.create({
-                organization: req.user._id,
                 ...data
             });
             await newDepartment.save();
@@ -45,6 +44,7 @@ module.exports.addTeachers = async (req, res) => {
 module.exports.createHod = async (req, res) => {
     try {
         if (req.user.userType == 1) {
+            console.log()
             const teacher = await Teacher.findOneAndUpdate({ _id: req.body._id }, { $set: { is_hod: true } }, { new: true });
             if (teacher) {
                 res.send(Response(false,"Hod updated successfully"));
@@ -57,4 +57,4 @@ module.exports.createHod = async (req, res) => {
     } catch (error) {
         res.send(Response(true, error));
     }
-}
+};
