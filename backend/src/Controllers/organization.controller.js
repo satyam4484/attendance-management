@@ -1,4 +1,5 @@
 const { Organization } = require("../models/organization.model");
+const {Department} = require("../models/department.model");
 const { Response } = require("../services/services");
 
 
@@ -35,5 +36,29 @@ module.exports.updateOrganization = async (req, res) => {
         }
     } catch (error) {
         res.send(Response(true, "Failed to update organization"));
+    }
+}
+
+
+module.exports.getDepartments = async(req,res)=>{
+    try{
+        if(req.user.userType === 1) {
+            const org = await Organization.findOne({user:req.user._id});
+            // nested poulated data 
+            // const departments =   await Department.find({organization:org._id},{name:true}).populate({
+            //     path:'head',
+            //     select:'user -_id',
+            //     populate:{
+            //         path:'user',
+            //         select:'name'
+            //     }
+            // });
+            const departments =   await Department.find({organization:org._id},{name:true});
+            res.send(Response(false,"",departments));
+        }else{  
+            throw "Access Denied";
+        }
+    }catch(error) {
+        res.send(Response(true,error));
     }
 }

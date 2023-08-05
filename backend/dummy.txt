@@ -1,0 +1,87 @@
+
+users data 
+------------
+
+// organization
+
+{
+    "userType": 1,
+    "name": "Satyam Singh",
+    "email": "satyam@gmail.com",
+    "Contact": {
+        "phoneNumber": "9106643992",
+        "gender": "Male",
+        "dateOfBirth": "2000-01-01",    
+        "state": "YourState",
+        "city": "YourCity",
+        "pincode": "12345",
+        "address": "Your Address"
+    },
+    "password": "satyam",
+    "confirmPassword": "satyam"
+}
+
+// TeacherSchema
+
+
+{
+    "userType": 2,
+    "name": "hod",
+    "email": "hod@gmail.com",
+    "Contact": {
+        "phoneNumber": "123456789",
+        "gender": "Male",
+        "dateOfBirth": "2000-01-01",    
+        "state": "YourState",
+        "city": "YourCity",
+        "pincode": "12345",
+        "address": "Your Address"
+    },
+    "password": "hod",
+    "confirmPassword": "hod"
+}
+
+{
+    "userType": 2,
+    "name": "teacher1",
+    "email": "teacher1@gmail.com",
+    "Contact": {
+        "phoneNumber": "123456781",
+        "gender": "Male",
+        "dateOfBirth": "2000-01-01",    
+        "state": "YourState",
+        "city": "YourCity",
+        "pincode": "12345",
+        "address": "Your Address"
+    },
+    "password": "teacher1",
+    "confirmPassword": "teacher1"
+}
+
+{
+    "userType": 2,
+    "name": "teacher2",
+    "email": "teacher2@gmail.com",
+    "Contact": {
+        "phoneNumber": "123456782",
+        "gender": "Male",
+        "dateOfBirth": "2000-01-01",    
+        "state": "YourState",
+        "city": "YourCity",
+        "pincode": "12345",
+        "address": "Your Address"
+    },
+    "password": "teacher2",
+    "confirmPassword": "teacher2"
+}
+
+
+-------------
+departments 
+
+
+
+
+-----------
+organization data 
+--------

@@ -78,12 +78,14 @@ const userSchema = new Schema({
 // save password in hash way middleware
 userSchema.pre("save",userMiddleware.hashPasswordAndGenerateUniqueOtp);
 
-
+// delete user related tables
 userSchema.pre("deleteOne",{ query:true,document: false },async function(next) {
     const user =await  User.findOne({_id:this.getQuery()._id});
-    await userMiddleware.deleteUserCascade(Contact,user.contact,next);
+    await userMiddleware.deleteUserCascade(Contact,user,next);
+    
     next();
 });
+
 const User=  model("User", userSchema);
 
 module.exports = {
