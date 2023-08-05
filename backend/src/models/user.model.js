@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcryptjs");
-const otpGenerator = require('otp-generator')
+const otpGenerator = require('otp-generator');
+const userMiddleware = require("../middleware/user.middleware");
 
 require("dotenv").config()
 
@@ -39,6 +40,8 @@ const contactSchema = new Schema({
 });
 
 
+const Contact =  model("Contact", contactSchema);
+
 
 const userSchema = new Schema({
     userType: {
@@ -72,18 +75,20 @@ const userSchema = new Schema({
     }
 });
 
+// save password in hash way middleware
+userSchema.pre("save",userMiddleware.hashPasswordAndGenerateUniqueOtp);
 
-userSchema.pre("save", async function (next) {
-    if (this.isModified("password")) {
-        this.password = await bcrypt.hash(this.password, 10);
-    }
-    this.otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
+
+userSchema.pre("deleteOne",{ query:true,document: false },async function(next) {
+    const user =await  User.findOne({_id:this.getQuery()._id});
+    await userMiddleware.deleteUserCascade(Contact,user.contact,next);
     next();
-})
+});
+const User=  model("User", userSchema);
 
 module.exports = {
-    User: model("User", userSchema),
-    Contact: model("Contact", contactSchema)
+    User,
+    Contact
 };
 
 

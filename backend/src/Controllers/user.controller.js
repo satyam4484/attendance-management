@@ -109,8 +109,8 @@ module.exports.createUser = async (req, res) => {
           await newTeacher.save();
         }
 
-        sendMail(response.name, response.otp);
-        res.status(201).send(Response(false, "Account created Sucessfully"));
+        // sendMail(response.name, response.otp);
+        res.status(201).send(Response(false, "Account created Sucessfully",response));
       } else {
         throw "Something went wrong try again";
       }
@@ -141,6 +141,21 @@ module.exports.updateUser = async (req, res) => {
     res.send(Response(true, error));
   }
 };
+
+
+module.exports.deleteUser = async (req,res)=>{
+  try{
+    const user = await User.deleteOne({_id:req.body._id});
+    if(user.deletedCount === 1) {
+      res.send(Response(false,"Account deleted successfully"));
+    }else{
+      throw "User not found";
+    }
+  }catch(error) {
+    console.log(error);
+    res.send(Response(true,error));
+  }
+}
 
 
 // 

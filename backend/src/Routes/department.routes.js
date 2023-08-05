@@ -7,7 +7,7 @@ const department = require("../Controllers/department.controller");
 
 router.route('/').post(verifyToken,department.createDepartment);
 router.route('/add-teachers').post(verifyToken,department.addTeachers);
-
+router.route('/add-hod').post(verifyToken,department.createHod);
 
 
 module.exports = router;

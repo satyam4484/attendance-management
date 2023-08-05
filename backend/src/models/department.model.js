@@ -12,7 +12,7 @@ const departmentSchema = new Schema({
   },
   head: {
     type: Schema.Types.ObjectId,
-    ref: "User",
+    ref: "Teacher",
     required: true,
   },
   members: [
@@ -29,6 +29,10 @@ const TeacherSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:'User',
         required:true
+    },
+    is_hod:{
+      type:Boolean,
+      default:false
     },
     subjects:[{
       type:Schema.Types.ObjectId,

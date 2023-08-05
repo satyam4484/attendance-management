@@ -1,4 +1,4 @@
-const { Department } = require("../models/department.model");
+const { Department, Teacher } = require("../models/department.model");
 const { Response } = require("../services/services");
 
 module.exports.createDepartment = async (req, res) => {
@@ -24,7 +24,6 @@ module.exports.createDepartment = async (req, res) => {
 module.exports.addTeachers = async (req, res) => {
     try {
         if (req.user.userType != 3) {
-            console.log(req.body)
             const department = await Department.findOne({ _id: req.body.departmentId });
             if (department) {
                 const member = req.body.memberIds.map(member => (member.id));
@@ -33,6 +32,24 @@ module.exports.addTeachers = async (req, res) => {
                 res.send(Response(false, "Faculty added successfully"));
             } else {
                 throw "Invalid Department";
+            }
+        } else {
+            throw "Access Denied";
+        }
+    } catch (error) {
+        res.send(Response(true, error));
+    }
+}
+
+// function to add a teacher as a hod for a department
+module.exports.createHod = async (req, res) => {
+    try {
+        if (req.user.userType == 1) {
+            const teacher = await Teacher.findOneAndUpdate({ _id: req.body._id }, { $set: { is_hod: true } }, { new: true });
+            if (teacher) {
+                res.send(Response(false,"Hod updated successfully"));
+            } else {
+                throw "Select a valid teacher";
             }
         } else {
             throw "Access Denied";
