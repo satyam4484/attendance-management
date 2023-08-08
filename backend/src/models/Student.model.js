@@ -1,6 +1,6 @@
 const {model,Schema} = require("mongoose");
 
-const studentSchema = new mongoose.Schema({
+const studentSchema = new Schema({
     user:{
         type:Schema.Types.ObjectId,
         ref:'User',
@@ -8,13 +8,15 @@ const studentSchema = new mongoose.Schema({
     },
     rollNumber: {
       type: Number,
-      required: true,
       unique: true,
+    },
+    verified:{
+      type:Boolean,
+      default:false
     },
     batch: {
       type: Schema.Types.ObjectId,
       ref: 'Batch',
-      required: true,
     },
 });
 

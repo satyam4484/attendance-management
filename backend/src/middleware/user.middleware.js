@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const otpGenerator = require('otp-generator');
 const {Teacher} = require("../models/department.model");
+const { Student } = require("../models/Student.model");
 
 
 
@@ -25,7 +26,11 @@ async function deleteUserCascade(Contact,user,next) {
         // delete if the current user is teacher than delete the teacher field also
         if(user.userType === 2) {
             await Teacher.deleteOne({user:user._id});
+        }else if(user.userType === 3) {
+            // delete the related student record
+            await Student.deleteOne({user:user._id});
         }
+
         next();
 
     } catch (error) {
