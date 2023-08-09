@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const { User, Contact } = require("../models/user.model");
 const { Teacher } = require("../models/department.model");
+const {Student} = require("../models/Student.model");
 const otpGenerator = require("otp-generator");
 
 const { sendMail } = require("../services/mail");
@@ -105,8 +106,15 @@ module.exports.createUser = async (req, res) => {
         if (response.userType === 2) {
           const newTeacher = await Teacher.create({
             user: response._id
-          });
+          })
           await newTeacher.save();
+        }
+        // create student profile if user is student
+        else if(response.userType === 3) {
+          const newStudent = await Student.create({
+            user:response._id
+          });
+          await newStudent.save();
         }
 
         // sendMail(response.name, response.otp);

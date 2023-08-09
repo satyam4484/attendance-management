@@ -1,5 +1,5 @@
 const { Organization } = require("../models/organization.model");
-const {Department} = require("../models/department.model");
+const {Department, Teacher} = require("../models/department.model");
 const { Response } = require("../services/services");
 
 
@@ -36,6 +36,26 @@ module.exports.updateOrganization = async (req, res) => {
         }
     } catch (error) {
         res.send(Response(true, "Failed to update organization"));
+    }
+}
+
+
+module.exports.verifyTeacher = async(req,res) => {
+    try{
+        if(req.user.userType === 1 || req.user.userType === 2) {
+            const data = req.body.teachers;
+            for(val in data) {
+                const teacher = await Teacher.findOneAndUpdate({_id:data[val].id},{$set:{verified:true}},{new:true});
+                if(!teacher) {
+                    throw "Teacher with the current id does not exist";
+                } 
+            }
+            res.send(Response(false,"Teachers account verified"));
+        }else{
+            throw "Access Denied";
+        }
+    }catch(error) {
+        res.send(Response(true,error));
     }
 }
 

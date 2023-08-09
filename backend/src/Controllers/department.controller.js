@@ -39,7 +39,6 @@ module.exports.addTeachers = async (req, res) => {
         res.send(Response(true, error));
     }
 }
-
 // function to add a teacher as a hod for a department
 module.exports.createHod = async (req, res) => {
     try {
