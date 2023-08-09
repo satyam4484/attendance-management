@@ -1,10 +1,11 @@
 import React from 'react';
 
-const Error = ({ touched, hasError, error }) => {
+const Error = ({ touched, hasError, error, msgType }) => {
+
     return (
         <>
             {touched && hasError && (
-                <p className="absolute bottom-[-20px] left-0 text-xs text-red-500 ml-5 mb-1">
+                <p className={`text-${msgType} ps-3 pe-0 pb-0 pt-0 m-0`} style={{fontSize: "12px"}}>
                     {error}
                 </p>
             )}

@@ -1,10 +1,18 @@
 export const initialStateSignup = {
-    name: { value: "", touched: false, hasError: false, error: "" },
-    email: { value: "", touched: false, hasError: false, error: "" },
-    password: { value: "", touched: false, hasError: false, error: "", type: "password" },
-    confirmPassword: { value: "", touched: false, hasError: false, error: "" },
+    name: { value: "", touched: false, hasError: false, error: "", msgType: "danger" },
+    email: { value: "", touched: false, hasError: false, error: "", msgType: "danger" },
+    password: { value: "", touched: false, hasError: false, error: "", type: "password", msgType: "danger" },
+    confirmPassword: { value: "", touched: false, hasError: false, error: "", msgType: "danger" },
+    phoneNumber: { value: "", touched: false, hasError: false, error: "", msgType: "danger" },
+    dateOfBirth: { value: "", touched: false, hasError: false, error: "", msgType: "danger" },
+    country: "India",
+    stateNew: { value: "", touched: false, hasError: false, error: "", msgType: "danger" },
+    city: { value: "", touched: false, hasError: false, error: "", msgType: "danger" },
+    pincode: { value: "", touched: false, hasError: false, error: "", msgType: "danger" },
+    address: { value: "", touched: false, hasError: false, error: "", msgType: "danger" },
     formValid: false,
-    userType: 1,
+    gender: "",
+    userType: 0,
 }
 
 export const signupReducer = (state, action) => {
@@ -14,6 +22,12 @@ export const signupReducer = (state, action) => {
             return {
                 ...state,
                 userType: Number(action.payload)
+            }
+
+        case "SET_GENDER":
+            return {
+                ...state,
+                gender: action.payload
             }
 
         case 'SIGNUP_INPUT_FOCUSED':
@@ -82,10 +96,48 @@ export const signupReducer = (state, action) => {
                 }
             }
 
+            if (action.payload.key === 'phoneNumber' && !/^\d{10}$/.test(action.payload.value)) {
+                return {
+                    ...state,
+                    [action.payload.key]: {
+                        ...state[action.payload.key],
+                        hasError: true,
+                        error: `${action.payload.placeholder} must be 10 digits long!`
+                    },
+                    formValid: false
+                };
+            }
+
+            if (action.payload.key === 'pincode' && !/^\d{6}$/.test(action.payload.value)) {
+                return {
+                    ...state,
+                    [action.payload.key]: {
+                        ...state[action.payload.key],
+                        hasError: true,
+                        error: `${action.payload.placeholder} must be 6 digits long!`,
+                    },
+                    formValid: false
+                };
+            }
+
             return {
                 ...state,
                 formValid: true // Set formValid to true when all validations pass
             };
+
+        case 'CAPITALISE_DATA':
+            const capitalizedValue = action.payload.value.trim().toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase());
+
+            return {
+                ...state,
+                [action.payload.key]: {
+                    ...state[action.payload.key],
+                    value: capitalizedValue,
+                    hasError: false,
+                    error: action.payload.value,
+                }
+            }
+
 
         case 'SIGNUP_VALID_DATA':
             if (state[action.payload.key].hasError) return state;
@@ -94,7 +146,8 @@ export const signupReducer = (state, action) => {
                 [action.payload.key]: {
                     ...state[action.payload.key],
                     hasError: action.payload.error,
-                    error: action.payload.value
+                    error: action.payload.value,
+                    msgType: action.payload.msgType
                 }
             }
 
@@ -108,7 +161,7 @@ export const signupReducer = (state, action) => {
             };
 
         case "SIGNUP_FORM_VALID":
-            if (state.email.value.length > 0 && state.password.value.length > 0 && state.confirmPassword.value.length > 0) {
+            if (state.name.value.length > 0 && state.email.value.length > 0 && state.password.value.length > 0 && state.confirmPassword.value.length > 0 && state.phoneNumber.value.length > 0 && state.userType.value.length > 0 && state.dateOfBirth.value.length > 0 && state.stateNew.value.length > 0 && state.city.value.length > 0 && state.pincode.value.length > 0 && state.address.value.length > 0) {
                 return {
                     ...state,
                     formValid: true
