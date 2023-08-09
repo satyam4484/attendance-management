@@ -8,7 +8,8 @@ const studentSchema = new Schema({
     },
     rollNumber: {
       type: Number,
-      unique: true,
+      // unique: true,
+      default:1
     },
     verified:{
       type:Boolean,
