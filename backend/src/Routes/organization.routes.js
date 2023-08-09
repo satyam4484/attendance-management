@@ -7,5 +7,6 @@ const verifyToken = require("../middleware/verifyToken");
 router.route('/').post(verifyToken,organization.createOrganization);
 router.route('/').patch(verifyToken,organization.updateOrganization);
 router.route('/departments-list').get(verifyToken,organization.getDepartments);
+router.route('/verify-teacher').post(verifyToken,organization.verifyTeacher);
 
 module.exports = router;

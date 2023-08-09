@@ -34,6 +34,15 @@ const TeacherSchema = new Schema({
       type:Boolean,
       default:false
     },
+    verified:{
+      type:Boolean,
+      default:false
+    },
+    department:{
+      type:Schema.Types.ObjectId,
+      ref:'Department',
+      default:undefined
+    },
     subjects:[{
       type:Schema.Types.ObjectId,
       ref:'Subject'

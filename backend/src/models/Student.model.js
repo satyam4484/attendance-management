@@ -14,6 +14,11 @@ const studentSchema = new Schema({
       type:Boolean,
       default:false
     },
+    department:{
+      type:Schema.Types.ObjectId,
+      ref:'Department',
+      default:undefined
+    },
     batch: {
       type: Schema.Types.ObjectId,
       ref: 'Batch',

@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const otpGenerator = require('otp-generator');
 const {Teacher} = require("../models/department.model");
@@ -30,7 +29,6 @@ async function deleteUserCascade(Contact,user,next) {
             // delete the related student record
             await Student.deleteOne({user:user._id});
         }
-
         next();
 
     } catch (error) {
