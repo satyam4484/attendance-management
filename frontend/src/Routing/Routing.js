@@ -1,7 +1,8 @@
 import React, { lazy, Suspense } from "react";
 import { Route, Routes, Outlet } from "react-router-dom";
+import Contact from "../Components/Forms/Contact";
 
-const Spinner = lazy(() => import('../Components/UI/Spinner'));
+const Spinner = lazy(() => import('../Components/UI/Loading'));
 const Homepage = lazy(() => import('../Components/UI/Homepage'));
 const SignUp = lazy(() => import('../Components/Forms/Signup'));
 const SignIn = lazy(() => import('../Components/Forms/Signin'));
@@ -13,6 +14,7 @@ const Routing = () => {
         <Route path="/" exact element={<Homepage />} />
         <Route path="/auth" element={<Outlet />}>
           <Route path="signup" element={<SignUp />} />
+          <Route path="contact" element={<Contact />} />
           <Route path="signin" element={<SignIn />} />
         </Route>
       </Routes>

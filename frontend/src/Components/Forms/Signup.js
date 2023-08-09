@@ -1,20 +1,22 @@
 import React, { useReducer } from "react";
-import signupBanner from "../../assets/images/signupBanner.png";
-import { Link } from "react-router-dom";
+import { Form, Row, Col, Button, Container, Spinner } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import { signupReducer, initialStateSignup } from "../../reducers/SignupReducer";
-import InputField from "./Units/InputField";
-import UserType from "./Units/UserType";
 import { useGlobalContext } from "../../context/Context";
+import { createUser, validateEmail, validatePhoneNumber, validatePincode } from "../../network/agent";
+import BasicInputField from "./Units/BasicInputField";
+import ContactInputField from "./Units/ContactInputField";
 
 const SignUp = () => {
     const [state, dispatch] = useReducer(signupReducer, initialStateSignup);
-    const { toggleSpinner, setMessage } = useGlobalContext();
 
-    const { name, email, password, confirmPassword, formValid, userType } = state;
+    const { name, email, password, confirmPassword, gender, formValid, userType } = state;
+
+    const { toggleSpinner, setMessage } = useGlobalContext();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (name.hasError || email.hasError || password.hasError || confirmPassword.hasError || formValid === false) {
+        if (name.hasError || email.hasError || password.hasError || confirmPassword.hasError || userType.hasError || gender.hasError || !formValid || !name.touched || !email.touched || !password.touched || !confirmPassword.touched || gender.trim().length === 0 || userType === 0) {
             // If there are errors in the form, do nothing
             setMessage(true, "error", "Please fill out all fields correctly!");
             return;
@@ -28,48 +30,168 @@ const SignUp = () => {
             password: password.value,
             confirmPassword: confirmPassword.value,
             userType: userType,
+            Contact: {
+                phoneNumber: state.phoneNumber.value,
+                dateOfBirth: state.dateOfBirth.value,
+                pincode: state.pincode.value,
+                gender: gender,
+                address: state.address.value,
+                'state': state.stateNew.value,
+                city: state.city.value,
+            },
         };
 
-        console.log(formData);
+        createUser(formData).then(response => {
+            console.log(response);
+        }).catch(error => {
+            console.log(error);
+        })
+
+        Spinner();
+    }
+
+    const onFocusHandler = (e) => {
+        dispatch({ type: "SIGNUP_INPUT_FOCUSED", payload: e.target.name });
+    }
+
+    const onBlurHandler = (e) => {
+        dispatch({
+            type: "SIGNUP_INPUT_BLUR",
+            payload: {
+                key: e.target.name,
+                value: e.target.value,
+                placeholder: e.target.placeholder,
+            }
+        });
+        if (e.target.name === 'email') {
+            validateEmail({ email: state.email.value }).then((data) => {
+                dispatch({
+                    type: "SIGNUP_VALID_DATA",
+                    payload: {
+                        key: "email",
+                        error: data.error,
+                        value: data.message,
+                        msgType: data.msgType
+                    }
+                });
+            });
+        }
+
+        if (e.target.name === 'phoneNumber') {
+            validatePhoneNumber({ phoneNumber: state.phoneNumber.value }).then((data) => {
+                dispatch({
+                    type: "SIGNUP_VALID_DATA",
+                    payload: {
+                        key: "phoneNumber",
+                        error: data.error,
+                        value: data.message,
+                        msgType: data.msgType
+                    }
+                });
+            });
+        }
+
+        //     if (e.target.name === "pincode") {
+        //         validatePincode(state.pincode.value).then((data) => {
+        //             if (data[0].Status === "Success") {
+        //                 dispatch({
+        //                     type: "SIGNUP_VALID_DATA",
+        //                     payload: {
+        //                         key: "pincode",
+        //                         error: "Success",
+        //                         value: `${data[0].PostOffice[0].District}, ${data[0].PostOffice[0].State}`,
+        //                         msgType: "success"
+        //                     }
+        //                 });
+        //             } else {
+        //                 dispatch({
+        //                     type: "SIGNUP_VALID_DATA",
+        //                     payload: {
+        //                         key: "pincode",
+        //                         error: "Error",
+        //                         value: "Pincode does not match with district/state!",
+        //                         msgType: "danger"
+        //                     }
+        //                 });
+        //             }
+        //         });
+        //     }
+
+    }
+
+    const valueChangeHandler = (e) => {
+        dispatch({
+            type: "SIGNUP_INPUT_CHANGE",
+            payload: {
+                key: e.target.name,
+                value: e.target.value
+            }
+        });
+    }
+
+    const togglePasswordVisibility = () => {
+        dispatch({ type: "SIGNUP_TOGGLE_PASSWORD_VISIBILITY" });
+    };
+
+    const genderHandler = (e) => {
+        dispatch({ type: "SET_GENDER", payload: e.value });
+    };
+
+    const userTypeHandler = (e) => {
+        dispatch({ type: "SIGNUP_USER_TYPE", payload: e.value });
+    };
+
+    const capitaliseDataHandler = (e) => {
+        dispatch({
+            type: "CAPITALISE_DATA", payload: {
+                key: e.target.name,
+                value: e.target.value // The user input value
+            }
+        })
     }
 
     return (
-        <div className="h-screen flex items-center justify-center">
-            <div className="drop-shadow-xl border rounded-2xl bg-white flex flex-col md:flex-row">
-                <div className="flex flex-col items-center justify-center p-8 md:w-1/2">
-                    <h1 className="uppercase font-extrabold text-3xl mb-6">Register</h1>
+        <Container>
+            <Row className="d-flex justify-content-center align-items-center">
+                <Col md={10}>
+                    <div className="shadow p-4 border rounded-4 m-5">
+                        <h1 className="text-uppercase text-center">Register</h1>
 
-                    <form className="w-full space-y-4" onSubmit={handleSubmit}>
+                        <Form onSubmit={handleSubmit}>
 
-                        <InputField state={state} dispatch={dispatch} />
-                        <UserType state={state} dispatch={dispatch} />
+                            <Row className="g-4 p-4">
 
-                        <div className="flex justify-center">
-                            <button
-                                type="submit"
-                                className="bg-gradient-to-br from-[#9181F4] to-[#5038ED] hover:from-[#9181F4] hover:to-[#5038ED] focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-xl text-white text-xs px-5 py-3.5 shadow-lg"
-                            >
-                                Create Account
-                            </button>
+                                <Col md={6}>
+                                    <BasicInputField state={state} onBlurHandler={onBlurHandler} onFocusHandler={onFocusHandler} valueChangeHandler={valueChangeHandler} togglePasswordVisibility={togglePasswordVisibility} userTypeHandler={userTypeHandler} />
+                                </Col>
+
+                                <Col md={6}>
+                                    <ContactInputField state={state} onBlurHandler={onBlurHandler} onFocusHandler={onFocusHandler} valueChangeHandler={valueChangeHandler} genderHandler={genderHandler} capitaliseDataHandler={capitaliseDataHandler} />
+                                </Col>
+
+                                <div className="d-flex align-items-center justify-content-center mt-5 mb-5">
+                                    <Button type="submit" className="">
+                                        Create Account
+                                    </Button>
+                                </div>
+                            </Row>
+
+                        </Form>
+
+                        <div className="d-flex align-items-center justify-content-center flex-column" >
+                            <p className="p-0 m-0 text-muted" >Already have an account?</p>
+                            <p className="p-0 m-0 text-muted">
+                                <Link to="/auth/signin">Login</Link>{" "}
+                                <span>Now</span>
+                            </p>
+
+                            <p className="mt-5 mb-0 text-muted" style={{ fontSize: "12px" }}>Go back to <Link to="/">Home</Link> </p>
                         </div>
-
-                    </form>
-                    
-                    <div className="flex flex-col flex-grow justify-end items-center pt-10">
-                        <p className="text-sm">Already have an account?</p>
-                        <p>
-                            <Link to="/auth/signin" className="font-bold text-blue-700 hover:text-blue-800 transition-colors">Login</Link>{" "}
-                            <span className="text-sm">Now</span>
-                        </p>
-
-                        <p className="text-xs mt-10 text-gray-400">Go back to <Link to="/" className="underline underline-offset-2">Home</Link> </p>
                     </div>
-                </div>
-                <div className="hidden md:block overflow-hidden rounded-r-2xl md:w-1/2">
-                    <img src={signupBanner} alt="signupBanner" className="max-w-full h-auto" />
-                </div>
-            </div>
-        </div>
+                </Col>
+            </Row>
+
+        </Container>
     )
 }
 

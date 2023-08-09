@@ -1,19 +1,23 @@
 import React from 'react'
+import { FloatingLabel, Form } from 'react-bootstrap'
 
-const Input = ({ type, name, value, placeholder, onBlur, onChange, onFocus }) => {
+const Input = ({ type, name, value, placeholder, onBlur, onChange, onFocus, id, label }) => {
 
     return (
         <>
-            <input
-                type={type}
-                name={name}
-                value={value}
-                placeholder={placeholder}
-                onBlur={onBlur}
-                onChange={onChange}
-                onFocus={onFocus}
-                className="block outline-none rounded-2xl bg-[#F0EDFF] w-full pl-12 p-2.5 text-sm placeholder:text-[#1C1C1C]"
-            />
+            <FloatingLabel label={label}>
+                <Form.Control
+                    id={id}
+                    type={type}
+                    name={name}
+                    value={value}
+                    placeholder={placeholder}
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    onFocus={onFocus}
+                    className="rounded-4"
+                />
+            </FloatingLabel>
         </>
     )
 }

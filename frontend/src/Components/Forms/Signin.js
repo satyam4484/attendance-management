@@ -1,74 +1,63 @@
 import React from "react";
+import { Form, Row, Col, Button, Container, Spinner, FloatingLabel } from "react-bootstrap";
 import signupBanner from "../../assets/images/signupBanner.png";
 import { Link } from "react-router-dom";
 import Icon from "../UI/Icon";
 
 const SignIn = () => {
 
-  const formFields = [
-    {
-      id: "email-icon",
-      icon: <Icon name="Mail" color="#1c1c1c" size="22" />,
-      type: "email",
-      placeholder: "Email",
-    },
-    {
-      id: "pass-icon",
-      icon: <Icon name="Lock" color="#1c1c1c" size="22" />,
-      type: "password",
-      placeholder: "Password",
-    },
-  ];
-
   return (
-    <div className="h-screen flex items-center justify-center">
-      <div className="drop-shadow-xl border rounded-2xl bg-white flex flex-col md:flex-row">
+    <Container>
+      <Row className="d-flex justify-content-center align-items-center">
+        <Col md={8}>
+          <div className="shadow p-4 border rounded-4 m-5">
 
-        <div className="hidden md:block overflow-hidden rounded-l-2xl md:w-1/2">
-          <img src={signupBanner} alt="signupBanner" className="max-w-full h-auto" />
-        </div>
+            <h1 className="text-uppercase text-center">Login</h1>
 
-        <div className="flex flex-col items-center justify-center p-8 md:w-1/2">
-          <h1 className="uppercase font-extrabold text-3xl mb-6">Login</h1>
-
-          <form className="w-full space-y-4">
-
-            {formFields.map((field) => (
-              <div key={field.id} className="relative mb-4">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-[#1C1C1C]">
-                  {field.icon}
-                </div>
-                <input
-                  type={field.type}
-                  id={field.id}
-                  className="block outline-none rounded-2xl bg-[#F0EDFF] w-full pl-12 p-2.5 text-sm placeholder:text-[#1C1C1C]"
-                  placeholder={field.placeholder}
-                />
+            <Form className="p-4">
+              <div className="mb-2">
+                <FloatingLabel label="Email">
+                  <Form.Control
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    className="rounded-4"
+                  />
+                </FloatingLabel>
               </div>
-            ))}
 
-            <div className="flex justify-center">
-              <button
-                type="submit"
-                className="bg-gradient-to-br from-[#9181F4] to-[#5038ED] hover:from-[#9181F4] hover:to-[#5038ED] focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-xl text-white text-xs px-5 py-3.5 shadow-lg"
-              >
-                Login
-              </button>
+              <div className="mb-2">
+                <FloatingLabel label="Password">
+                  <Form.Control
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    className="rounded-4"
+                  />
+                </FloatingLabel>
+              </div>
+
+              <div className="d-flex align-items-center justify-content-center mt-5 mb-5">
+                <Button type="submit" className="">
+                  Login
+                </Button>
+              </div>
+            </Form>
+
+            <div className="d-flex align-items-center justify-content-center flex-column" >
+              <p className="p-0 m-0 text-muted">Don't have an account?</p>
+              <p className="p-0 m-0 text-muted">
+                <Link to="/auth/signup">Create New Account</Link>{" "}
+                <span>Now</span>
+              </p>
+              <p className="mt-5 mb-0 text-muted" style={{ fontSize: "12px" }}>Go back to <Link to="/" >Home</Link> </p>
             </div>
-
-          </form>
-          <div className="flex flex-col flex-grow justify-end items-center pt-10">
-            <p className="text-sm">Don't have an account?</p>
-            <p>
-              <Link to="/auth/signup" className="font-bold text-blue-700 hover:text-blue-800 transition-colors">Create New Account</Link>{" "}
-              <span className="text-sm">Now</span>
-            </p>
-            <p className="mt-10 text-xs text-gray-400">Go back to <Link to="/" className="underline underline-offset-2">Home</Link> </p>
           </div>
-        </div>
 
-      </div>
-    </div>
+        </Col>
+      </Row>
+    </Container>
+
   )
 }
 
