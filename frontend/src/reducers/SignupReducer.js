@@ -11,9 +11,11 @@ export const initialStateSignup = {
     pincode: { value: "", touched: false, hasError: false, error: "", msgType: "danger" },
     address: { value: "", touched: false, hasError: false, error: "", msgType: "danger" },
     formValid: false,
-    gender: "",
-    userType: 0,
-}
+    userType: { value: 0, touched: false, hasError: false, error: "", msgType: "danger" },
+    gender: { value: "", touched: false, hasError: false, error: "", msgType: "danger" },
+    otpCode: { value: "", touched: false, hasError: false, error: "", msgType: "danger" },
+};
+
 
 export const signupReducer = (state, action) => {
     switch (action.type) {
@@ -21,13 +23,19 @@ export const signupReducer = (state, action) => {
         case "SIGNUP_USER_TYPE":
             return {
                 ...state,
-                userType: Number(action.payload)
+                userType: {
+                    ...state.userType,
+                    value: Number(action.payload)
+                }
             }
 
         case "SET_GENDER":
             return {
                 ...state,
-                gender: action.payload
+                gender: {
+                    ...state.gender,
+                    value: action.payload
+                }
             }
 
         case 'SIGNUP_INPUT_FOCUSED':
@@ -66,7 +74,7 @@ export const signupReducer = (state, action) => {
                     [action.payload.key]: {
                         ...state[action.payload.key],
                         hasError: true,
-                        error: `Email must be like user@gmail.com !`
+                        error: `Email must be like "user@gmail.com"!`
                     },
                     formValid: false
                 }
@@ -161,7 +169,7 @@ export const signupReducer = (state, action) => {
             };
 
         case "SIGNUP_FORM_VALID":
-            if (state.name.value.length > 0 && state.email.value.length > 0 && state.password.value.length > 0 && state.confirmPassword.value.length > 0 && state.phoneNumber.value.length > 0 && state.userType.value.length > 0 && state.dateOfBirth.value.length > 0 && state.stateNew.value.length > 0 && state.city.value.length > 0 && state.pincode.value.length > 0 && state.address.value.length > 0) {
+            if (state.name.value.length > 0 && state.email.value.length > 0 && state.password.value.length > 0 && state.confirmPassword.value.length > 0 && state.phoneNumber.value.length > 0 && state.userType.value.length > 0 && state.dateOfBirth.value.length > 0 && state.stateNew.value.length > 0 && state.city.value.length > 0 && state.pincode.value.length > 0 && state.address.value.length > 0 && state.gender.value !== "") {
                 return {
                     ...state,
                     formValid: true
@@ -169,8 +177,10 @@ export const signupReducer = (state, action) => {
             }
 
         case 'SIGNUP_RESET':
-            state = initialStateSignup;
-            return state;
+            return {
+                ...state,
+                ...initialStateSignup, // Reset all fields
+            };
 
         default:
             return state

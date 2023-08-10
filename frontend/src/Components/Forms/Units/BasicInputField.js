@@ -1,5 +1,5 @@
 import React from 'react'
-import { FloatingLabel, Form, InputGroup } from "react-bootstrap";
+import { FloatingLabel, Form, InputGroup, Button } from "react-bootstrap";
 import FieldError from './FieldError';
 import Icon from '../../UI/Icon';
 import Input from './Input';
@@ -71,16 +71,16 @@ const BasicInputField = ({ state, onBlurHandler, onFocusHandler, valueChangeHand
                             onChange={valueChangeHandler}
                             onFocus={onFocusHandler}
                             onBlur={onBlurHandler}
-                            className="rounded-start-4"
+                            className="rounded-start-4 outline-end-0 border-end-0"
+                            aria-describedby="basic-addon1"
                         />
-                        <InputGroup.Text onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }} className="rounded-end-4">
+                        <Button className="rounded-end-4 bg-white border-start-0" style={{borderColor: "lightgrey"}} id="button-addon1" onClick={togglePasswordVisibility}>
                             {password.type === "password" ? (
                                 <Icon name="EyeOff" color="#1c1c1c" size="18" />
                             ) : (
                                 <Icon name="Eye" color="#1c1c1c" size="18" />
                             )}
-
-                        </InputGroup.Text>
+                        </Button>
                     </FloatingLabel>
                 </InputGroup>
                 <FieldError touched={password.touched} hasError={password.hasError} error={password.error} msgType={password.msgType} />
@@ -106,7 +106,7 @@ const BasicInputField = ({ state, onBlurHandler, onFocusHandler, valueChangeHand
                 id="userType"
                 name="userType"
                 options={userTypeOptions}
-                value={userTypeOptions.find(option => option.value === userType)}
+                value={userTypeOptions.find(option => option.value === userType.value)}
                 onChange={userTypeHandler}
             />
 

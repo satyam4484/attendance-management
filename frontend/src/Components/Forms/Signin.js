@@ -38,7 +38,7 @@ const SignIn = () => {
               </div>
 
               <div className="d-flex align-items-center justify-content-center mt-5 mb-5">
-                <Button type="submit" className="">
+                <Button type="submit" className="rounded-4 ps-3 pe-3 pt-2 pb-2">
                   Login
                 </Button>
               </div>
