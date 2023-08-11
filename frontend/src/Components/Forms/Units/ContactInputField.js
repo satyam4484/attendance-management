@@ -5,13 +5,13 @@ import Input from './Input';
 import FieldError from './FieldError';
 import { useSignupContext } from '../../../context/SignupContext';
 
-import {genderOptions,customStyles} from "../../Services/appdata";
+import { genderOptions, customStyles } from "../../Services/appdata";
 
 const ContactInputField = () => {
 
-    const { phoneNumber, dateOfBirth, address, stateNew, pincode, gender, city,onBlurHandler,onFocusHandler,valueChangeHandler,genderHandler,capitaliseDataHandler } = useSignupContext();
+    const { phoneNumber, dateOfBirth, address, stateNew, pincode, gender, city, onBlurHandler, onFocusHandler, valueChangeHandler, genderHandler, capitaliseDataHandler } = useSignupContext();
 
-    
+
 
     return (
         <>
@@ -31,14 +31,17 @@ const ContactInputField = () => {
 
             <div className="mb-2">
                 <Input
-                    label="Date Of Birth"
+                    label="Date of Birth"
                     type="date"
                     name="dateOfBirth"
                     value={dateOfBirth.value}
-                    placeholder="Date Of Birth"
+                    placeholder="Date of Birth"
                     onChange={valueChangeHandler}
                     onFocus={onFocusHandler}
                     onBlur={onBlurHandler}
+                    min="1900-01-01"
+                    max={new Date().toISOString().split('T')[0]} // Today's date
+                    required
                 />
                 <FieldError touched={dateOfBirth.touched} hasError={dateOfBirth.hasError} error={dateOfBirth.error} msgType={dateOfBirth.msgType} />
             </div>
