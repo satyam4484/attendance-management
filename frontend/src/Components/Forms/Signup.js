@@ -195,13 +195,13 @@ const SignUp = () => {
         <>
             <Container>
                 <Row className="d-flex justify-content-center align-items-center">
-                    <Col md={10}>
-                        <div className="shadow p-4 border rounded-4 m-5">
+                    <Col sm={12} lg={10}>
+                        <div className="shadow p-4 border rounded-4 m-md-2 m-3">
                             <h1 className="text-uppercase text-center">Register</h1>
 
                             <Form onSubmit={handleSubmit}>
 
-                                <Row className="g-4 p-4">
+                                <Row className="g-4 p-2">
 
                                     <Col md={6}>
                                         <BasicInputField state={state} onBlurHandler={onBlurHandler} onFocusHandler={onFocusHandler} valueChangeHandler={valueChangeHandler} togglePasswordVisibility={togglePasswordVisibility} userTypeHandler={userTypeHandler} />
