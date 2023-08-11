@@ -8,7 +8,7 @@ const AppContext = createContext();
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(globalReducer, initialState);
 
-  const appName = "Attendify";
+  const appName = "RollCall";
 
   const navbarLinkClickEvent = (index) => {
     dispatch({ type: "SET_NAV_LINK_CURRENT_SELECTED", payload: index });

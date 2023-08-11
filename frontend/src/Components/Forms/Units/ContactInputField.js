@@ -120,9 +120,10 @@ const ContactInputField = ({ state, onBlurHandler, onFocusHandler, valueChangeHa
                 placeholder="Select Gender"
                 name="gender"
                 options={genderOptions}
-                value={genderOptions.find(option => option.value === gender)}
+                value={genderOptions.find(option => option.value === gender.value)}
                 onChange={genderHandler}
             />
+            <FieldError touched={gender.touched} hasError={gender.hasError} error={gender.error} msgType={gender.msgType} />
         </>
     )
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { FloatingLabel, Form } from 'react-bootstrap'
 
-const Input = ({ type, name, value, placeholder, onBlur, onChange, onFocus, id, label }) => {
+const Input = ({ type, name, value, placeholder, onBlur, onChange, onFocus, id, label, className, style }) => {
 
     return (
         <>
@@ -15,7 +15,8 @@ const Input = ({ type, name, value, placeholder, onBlur, onChange, onFocus, id, 
                     onBlur={onBlur}
                     onChange={onChange}
                     onFocus={onFocus}
-                    className="rounded-4"
+                    className={`rounded-4 ${className}`}
+                    style={style}
                 />
             </FloatingLabel>
         </>
