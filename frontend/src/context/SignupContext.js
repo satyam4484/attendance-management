@@ -1,7 +1,7 @@
 import React, { createContext, useReducer, useContext } from "react";
 import { initialStateSignup, signupReducer } from "../reducers/SignupReducer";
 import { validateEmail, validatePhoneNumber } from "../network/agent";
-import {validatePincode} from "../network/services";
+import { validatePincode } from "../network/services";
 
 const SignUpContext = createContext();
 
@@ -31,8 +31,8 @@ const SignUpProvider = ({ children }) => {
                         key: "email",
                         error: data.error,
                         // value: data.message,
-                        value: data.error ? "Email already taken! Please try different one!" : "Email is available!",
-                        msgType: data.error ? "danger" : "success"
+                        value: "Email already taken! Please try different one!",
+                        msgType: "danger"
                     }
                 });
             });
@@ -47,8 +47,8 @@ const SignUpProvider = ({ children }) => {
                         key: "phoneNumber",
                         error: data.error,
                         // value: data.message,
-                        value: data.error ? "Phone Number already taken! Please try different one!" : "Phone Number is available!",
-                        msgType: data.error ? "danger" : "success"
+                        value: "Phone Number already taken! Please try different one!",
+                        msgType: "danger"
                     }
                 });
             });
@@ -115,7 +115,7 @@ const SignUpProvider = ({ children }) => {
     }
 
     return (
-        <SignUpContext.Provider value={{ ...state, onFocusHandler, onBlurHandler ,valueChangeHandler,genderHandler,userTypeHandler,capitaliseDataHandler,resetForm}}>
+        <SignUpContext.Provider value={{ ...state, onFocusHandler, onBlurHandler, valueChangeHandler, genderHandler, userTypeHandler, capitaliseDataHandler, resetForm }}>
             {children}
         </SignUpContext.Provider>
     )

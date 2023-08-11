@@ -46,6 +46,26 @@ export const signupReducer = (state, action) => {
 
 
         case 'SIGNUP_INPUT_CHANGE':
+
+            if (action.payload.key === 'dateOfBirth') {
+                const selectedDate = new Date(action.payload.value);
+                const minDate = new Date('1900-01-01');
+                const maxDate = new Date(); // Today's date
+
+                if (selectedDate < minDate || selectedDate > maxDate) {
+                    return {
+                        ...state,
+                        [action.payload.key]: {
+                            ...state[action.payload.key],
+                            hasError: true,
+                            error: `Please enter a valid Date of Birth!`,
+                            value: action.payload.value
+                        },
+                        formValid: false
+                    };
+                }
+            }
+
             return {
                 ...state,
                 [action.payload.key]: {
@@ -98,7 +118,7 @@ export const signupReducer = (state, action) => {
                     [action.payload.key]: {
                         ...state[action.payload.key],
                         hasError: true,
-                        error: `Passwords do not match!`
+                        error: `Password and Confirm Password must be same!`
                     },
                     formValid: false
                 }
@@ -146,7 +166,6 @@ export const signupReducer = (state, action) => {
                 }
             }
 
-
         case 'SIGNUP_VALID_DATA':
             if (state[action.payload.key].hasError) return state;
             return {
@@ -159,9 +178,21 @@ export const signupReducer = (state, action) => {
                 }
             }
 
-
         case "SIGNUP_FORM_VALID":
-            if (state.name.value.length > 0 && state.email.value.length > 0 && state.password.value.length > 0 && state.confirmPassword.value.length > 0 && state.phoneNumber.value.length > 0 && state.userType.value.length > 0 && state.dateOfBirth.value.length > 0 && state.stateNew.value.length > 0 && state.city.value.length > 0 && state.pincode.value.length > 0 && state.address.value.length > 0 && state.gender.value !== "") {
+            if (
+                state.name.value.length > 0 &&
+                state.email.value.length > 0 &&
+                state.password.value.length > 0 &&
+                state.confirmPassword.value.length > 0 &&
+                state.phoneNumber.value.length > 0 &&
+                state.userType.value.length > 0 &&
+                state.dateOfBirth.value.length > 0 &&
+                state.stateNew.value.length > 0 &&
+                state.city.value.length > 0 &&
+                state.pincode.value.length > 0 &&
+                state.address.value.length > 0 &&
+                state.gender.value !== ""
+            ) {
                 return {
                     ...state,
                     formValid: true

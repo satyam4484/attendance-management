@@ -1,18 +1,11 @@
-import React, { useReducer, useState } from "react";
+import React, { useState } from "react";
 import { Form, Row, Col, Button, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import {
-  signupReducer,
-  initialStateSignup,
-} from "../../reducers/SignupReducer";
 import { useGlobalContext } from "../../context/Context";
 import {
   createUser,
   generateOtp,
-  validateEmail,
-  validatePhoneNumber,
 } from "../../network/agent";
-import { validatePincode } from "../../network/services";
 import BasicInputField from "./Units/BasicInputField";
 import ContactInputField from "./Units/ContactInputField";
 import OtpForm from "./OtpForm";
@@ -20,7 +13,7 @@ import { useSignupContext } from "../../context/SignupContext";
 
 
 const SignupWrap = () => {
- 
+
   const {
     name,
     email,
@@ -53,6 +46,7 @@ const SignupWrap = () => {
       email.hasError ||
       password.hasError ||
       confirmPassword.hasError ||
+      dateOfBirth.hasError ||
       userType.hasError ||
       gender.hasError ||
       !formValid ||
@@ -60,6 +54,7 @@ const SignupWrap = () => {
       !email.touched ||
       !password.touched ||
       !confirmPassword.touched ||
+      !dateOfBirth.touched ||
       gender.value.length === 0 ||
       userType.value === 0
     ) {
@@ -92,6 +87,7 @@ const SignupWrap = () => {
       },
     };
 
+    // Create User API call
     createUser(formData)
       .then((response) => {
         if (response.error === false) {
@@ -105,18 +101,21 @@ const SignupWrap = () => {
           }, [2000]);
 
           setTimeout(() => {
+
+            // Generate OTP API call
             generateOtp({ email: response.data.email })
               .then((response) => {
                 if (response.error === false) {
-                  setMessage(true, "success", "OTP sent successfully!");
                   setGeneratedUserId(response.data.user_id); // Set the generated user ID
+                  setMessage(true, "success", "OTP sent successfully!");
                   setShowModal(true);
                 }
               })
               .catch((error) => {
                 console.log(error);
               });
-          }, 2000);
+
+          }, 3000);
         }
       })
       .catch((error) => {
@@ -131,7 +130,7 @@ const SignupWrap = () => {
       <Container>
         <Row className="d-flex justify-content-center align-items-center">
           <Col sm={12} lg={10}>
-            <div className="shadow p-4 border rounded-4 m-md-2 m-3">
+            <div className="shadow p-4 border rounded-4 m-3">
               <h1 className="text-uppercase text-center">Register</h1>
 
               <Form onSubmit={handleSubmit}>

@@ -1,8 +1,6 @@
 import React from "react";
 import { Form, Row, Col, Button, Container, Spinner, FloatingLabel } from "react-bootstrap";
-import signupBanner from "../../assets/images/signupBanner.png";
 import { Link } from "react-router-dom";
-import Icon from "../UI/Icon";
 
 const SignIn = () => {
 
@@ -10,7 +8,7 @@ const SignIn = () => {
     <Container>
       <Row className="d-flex justify-content-center align-items-center">
         <Col md={8}>
-          <div className="shadow p-4 border rounded-4 m-5">
+          <div className="shadow p-4 border rounded-4 m-4">
 
             <h1 className="text-uppercase text-center">Login</h1>
 
