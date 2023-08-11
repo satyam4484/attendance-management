@@ -118,7 +118,7 @@ export const signupReducer = (state, action) => {
                     [action.payload.key]: {
                         ...state[action.payload.key],
                         hasError: true,
-                        error: action.payload.value
+                        error: `Password and Confirm Password must be same!`
                     },
                     formValid: false
                 }
