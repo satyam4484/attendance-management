@@ -1,7 +1,7 @@
 export const initialStateSignup = {
     name: { value: "", touched: false, hasError: false, error: "", msgType: "danger" },
     email: { value: "", touched: false, hasError: false, error: "", msgType: "danger" },
-    password: { value: "", touched: false, hasError: false, error: "", type: "password", msgType: "danger" },
+    password: { value: "", touched: false, hasError: false, error: "", msgType: "danger" },
     confirmPassword: { value: "", touched: false, hasError: false, error: "", msgType: "danger" },
     phoneNumber: { value: "", touched: false, hasError: false, error: "", msgType: "danger" },
     dateOfBirth: { value: "", touched: false, hasError: false, error: "", msgType: "danger" },
@@ -159,14 +159,6 @@ export const signupReducer = (state, action) => {
                 }
             }
 
-        case "SIGNUP_TOGGLE_PASSWORD_VISIBILITY":
-            return {
-                ...state,
-                password: {
-                    ...state.password,
-                    type: state.password.type === "password" ? "text" : "password"
-                }
-            };
 
         case "SIGNUP_FORM_VALID":
             if (state.name.value.length > 0 && state.email.value.length > 0 && state.password.value.length > 0 && state.confirmPassword.value.length > 0 && state.phoneNumber.value.length > 0 && state.userType.value.length > 0 && state.dateOfBirth.value.length > 0 && state.stateNew.value.length > 0 && state.city.value.length > 0 && state.pincode.value.length > 0 && state.address.value.length > 0 && state.gender.value !== "") {

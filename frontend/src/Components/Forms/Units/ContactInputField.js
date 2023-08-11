@@ -3,31 +3,15 @@ import Select from "react-select";
 import { FloatingLabel, Form } from "react-bootstrap";
 import Input from './Input';
 import FieldError from './FieldError';
+import { useSignupContext } from '../../../context/SignupContext';
 
-const genderOptions = [
-    { value: 'Male', label: 'Male' },
-    { value: 'Female', label: 'Female' },
-    { value: 'Other', label: 'Other' }
-];
+import {genderOptions,customStyles} from "../../Services/appdata";
 
-const ContactInputField = ({ state, onBlurHandler, onFocusHandler, valueChangeHandler, genderHandler, capitaliseDataHandler }) => {
+const ContactInputField = () => {
 
-    const { phoneNumber, dateOfBirth, address, stateNew, pincode, gender, city } = state
+    const { phoneNumber, dateOfBirth, address, stateNew, pincode, gender, city,onBlurHandler,onFocusHandler,valueChangeHandler,genderHandler,capitaliseDataHandler } = useSignupContext();
 
-    const customStyles = {
-        control: (baseStyles, state) => ({
-            ...baseStyles,
-            borderRadius: '1rem',
-            paddingLeft: '0.625rem',
-            paddingBottom: '0.625rem',
-            paddingTop: '0.625rem',
-            width: '100%',
-            color: '#1C1C1C',
-            appearance: 'none',
-            outline: 'none',
-            boxShadow: 'none',
-        })
-    };
+    
 
     return (
         <>
