@@ -1,6 +1,6 @@
 import React from "react"
-import Input from "./Input";
-import FieldError from "./FieldError";
+import Input from "../Units/Input";
+import FieldError from "../Units/FieldError";
 import { useSignupContext } from "../../../context/SignupContext";
 import { genderOptions } from "../../Services/appdata";
 

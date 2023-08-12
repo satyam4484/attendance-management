@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { InputGroup, Button } from "react-bootstrap";
-import FieldError from './FieldError';
+import FieldError from '../Units/FieldError';
 import Icon from '../../UI/Icon';
-import Input from './Input';
+import Input from '../Units/Input';
 import { useSignupContext } from '../../../context/SignupContext';
 import { userTypeOptions } from '../../Services/appdata';
 

@@ -7,7 +7,6 @@ import Routing from "./routing/Routing";
 import Message from './Components/UI/Message';
 import Loading from './Components/UI/Loading';
 import { useGlobalContext } from './context/Context';
-import OtpForm from './Components/Forms/OtpForm';
 
 const App = () => {
     const { isLoading } = useGlobalContext();
@@ -15,14 +14,13 @@ const App = () => {
     useEffect(() => {
         // check if token exist in the localstorage if yes then with that login a user and save is data 
         // and change the userlogin to true
-        
-    },[]);
+
+    }, []);
 
     return (
         <>
             <Header />
             <Message />
-            <OtpForm />
             {isLoading && <Loading />}
             <Routing />
         </>

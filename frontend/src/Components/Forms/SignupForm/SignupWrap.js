@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { Form, Row, Col, Button, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useGlobalContext } from "../../context/Context";
+import { useGlobalContext } from "../../../context/Context";
 import {
   createUser,
   generateOtp,
-} from "../../network/agent";
-import BasicInputField from "./Units/BasicInputField";
-import ContactInputField from "./Units/ContactInputField";
-import OtpForm from "./OtpForm";
-import { useSignupContext } from "../../context/SignupContext";
+} from "../../../network/agent";
+import BasicInputField from "./BasicInputField";
+import ContactInputField from "./ContactInputField";
+import OtpForm from "../OtpForm";
+import { useSignupContext } from "../../../context/SignupContext";
 
 
 const SignupWrap = () => {
@@ -49,12 +49,14 @@ const SignupWrap = () => {
       dateOfBirth.hasError ||
       userType.hasError ||
       gender.hasError ||
+      pincode.hasError ||
       !formValid ||
       !name.touched ||
       !email.touched ||
       !password.touched ||
       !confirmPassword.touched ||
       !dateOfBirth.touched ||
+      !pincode.touched ||
       gender.value.length === 0 ||
       userType.value === 0
     ) {
