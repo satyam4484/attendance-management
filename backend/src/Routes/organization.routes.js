@@ -9,4 +9,7 @@ router.route('/').patch(verifyToken,organization.updateOrganization);
 router.route('/departments-list').get(verifyToken,organization.getDepartments);
 router.route('/verify-teacher').post(verifyToken,organization.verifyTeacher);
 
+router.route('/add-to-department').post(verifyToken,organization.assignDepartment);
+
+
 module.exports = router;

@@ -2,9 +2,6 @@ const {User,Contact} = require('../models/user.model');
 const {Response} = require('./services');
 
 
-
-
-
 module.exports.checkEmailValid = async (req, res) => {
     try {
       const email = await User.findOne({ email: req.body.email });

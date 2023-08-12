@@ -2,6 +2,9 @@ const jwt = require("jsonwebtoken");
 const {Response} = require("../services/services");
 
 const {User} = require("../models/user.model");
+const {Organization} = require("../models/organization.model");
+const { Teacher } = require("../models/department.model");
+const { Student } = require("../models/Student.model");
 
 async function verifyToken(req, res, next) {
     try {
@@ -12,10 +15,19 @@ async function verifyToken(req, res, next) {
             if (tokenVerify) {
                 const user = await User.findOne(
                     { _id: tokenVerify._id },
-                    { password: 0, otp: 0 }
+                    { userType:1 }
                   );
                 req.user = user;
-
+                if(user.userType === 1) {
+                    const organization = await Organization.findOne({user:user._id});
+                    req.Organization = organization;
+                }else if(user.userType === 2) {
+                    const teacher = await Teacher.findOne({user:user._id});
+                    req.teacher = teacher;
+                }else if(user.userType === 3) {
+                    const student = await Student.findOne({user:user._id});
+                    req.student = student;
+                }
             }
             next();
         } else {
