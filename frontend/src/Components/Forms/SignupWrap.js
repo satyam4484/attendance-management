@@ -90,12 +90,15 @@ const SignupWrap = () => {
     // Create User API call
     createUser(formData)
       .then((response) => {
+
         if (response.error === false) {
           toggleSpinner();
+
           setTimeout(() => {
             resetForm();
             setMessage(true, "success", "Registered successfully!");
           }, [1000]);
+
           setTimeout(() => {
             setMessage(true, "info", "Please verify OTP sent on your email!");
           }, [2000]);
@@ -116,6 +119,7 @@ const SignupWrap = () => {
               });
 
           }, 3000);
+          
         }
       })
       .catch((error) => {
