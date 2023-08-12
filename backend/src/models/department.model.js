@@ -43,47 +43,25 @@ const TeacherSchema = new Schema({
       ref:'Department',
       default:undefined
     },
-    subjects:[{
-      type:Schema.Types.ObjectId,
-      ref:'Subject'
-    }]
 });
 
 const subjectSchema = new Schema({
-  department: {
-    type: Schema.Types.ObjectId,
-    ref: "Department",
-    required: true,
-  },
   name: {
     type: String,
     required: true,
+    unique:true
   },
-  sem: {
-    type: String,
-    required: true,
-  },
+  teacher:{
+    type:Schema.Types.ObjectId,
+    ref:'Teacher',
+    required:true
+  }
 });
 
-const batchSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  year: {
-    type: Number,
-    required: true,
-  },
-  department: {
-    type: Schema.Types.ObjectId,
-    ref: "Department",
-    required: true,
-  },
-});
 
-const Batch = model("Batch", batchSchema);
+
 const Department = model("Department", departmentSchema);
 const Subject = model("Subject", subjectSchema);
 const Teacher = model("Teacher",TeacherSchema);
 
-module.exports = { Department, Subject,Batch,Teacher };
+module.exports = { Department, Subject,Teacher };

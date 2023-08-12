@@ -9,5 +9,8 @@ router.route('/').post(verifyToken,department.createDepartment);
 router.route('/add-teachers').post(verifyToken,department.addTeachers);
 router.route('/add-hod').post(verifyToken,department.createHod);
 
+// subjects
+router.route('/add-subjects').post(verifyToken,department.addSubjects);
+router.route('/assign-subject').post(verifyToken,department.assignSubject)
 
 module.exports = router;

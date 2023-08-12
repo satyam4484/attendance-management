@@ -82,3 +82,20 @@ module.exports.getDepartments = async(req,res)=>{
         res.send(Response(true,error));
     }
 }
+
+module.exports.assignDepartment = async (req,res) => {
+    try{
+        if(req.user.userType === 1) {
+            const data = req.body;
+            const teacher = await Teacher.findOneAndUpdate({_id:data.teacher_id},{$set:{department:data.department_id}},{new:true});
+            if(teacher) {
+                res.send(Response(false,"Added to department"));
+            }else{
+                throw "Invalid Teacher Profile"
+            }
+
+        }else{}
+    }catch(error) {
+        res.send(Response(true,error));
+    }
+}

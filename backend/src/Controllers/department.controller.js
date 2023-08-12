@@ -1,6 +1,47 @@
-const { Department, Teacher } = require("../models/department.model");
+const { Department, Teacher, Subject } = require("../models/department.model");
 const { Response } = require("../services/services");
 
+
+module.exports.assignSubject = async (req, res) => {
+    try {
+        if (req.user.userType === 2 && req.teacher.is_hod === true) {
+            const subject = req.body.subject_id;
+            const teacher = await Teacher.findOneAndUpdate(
+                { _id: req.body.teacher_id },
+                { $push: { subjects: subject } },
+                { new: true }
+            );
+            if (teacher) {
+                res.send(Response(false, "Subject Assigned"));
+            } else {
+                throw "Enter a valid data ";
+            }
+        }else{
+            throw "Access Denied";
+        }
+    } catch (error) {
+        res.send(Response(true, error));
+    }
+}
+
+
+module.exports.addSubjects = async (req, res) => {
+    try {
+        if (req.user.userType === 2 && req.teacher.is_hod === true) {
+            const data = req.body;
+            const newSubject = await Subject.create({
+                department: req.teacher.department,
+                ...data
+            })
+            await newSubject.save();
+            res.send(Response(false, "", newSubject));
+        } else {
+            throw "Access Denied";
+        }
+    } catch (error) {
+        res.send(Response(true, error));
+    }
+}
 module.exports.createDepartment = async (req, res) => {
     try {
         if (req.user.userType == 1) {
@@ -46,7 +87,7 @@ module.exports.createHod = async (req, res) => {
             console.log()
             const teacher = await Teacher.findOneAndUpdate({ _id: req.body._id }, { $set: { is_hod: true } }, { new: true });
             if (teacher) {
-                res.send(Response(false,"Hod updated successfully"));
+                res.send(Response(false, "Hod updated successfully"));
             } else {
                 throw "Select a valid teacher";
             }
