@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Row, Col, Button, Container } from "react-bootstrap";
+import { Form, Row, Col, Button, Container, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useGlobalContext } from "../../../context/Context";
 import { createUser, generateOtp } from "../../../network/agent";
@@ -31,13 +31,14 @@ const SignupWrap = () => {
   const { toggleSpinner, setMessage } = useGlobalContext();
 
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [generatedUserId, setGeneratedUserId] = useState(null);
 
   const handleModalOpen = () => {
     setShowModal(true);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const requiredFields = [
@@ -58,7 +59,9 @@ const SignupWrap = () => {
     }
 
     // Form is valid, proceed with the API call
-    toggleSpinner();
+
+    setIsLoading(true);
+
 
     const formData = {
       userType: userType.value,
@@ -75,45 +78,45 @@ const SignupWrap = () => {
 
     console.log(formData);
 
-    // Create User API call
-    createUser(formData)
-      .then(handleSignUpSuccess)
-      .catch(handleSignUpError);
-
-    toggleSpinner();
-  };
-
-  const handleSignUpSuccess = (response) => {
-    if (response.error === false) {
+    try {
       toggleSpinner();
 
-      setTimeout(() => {
-        resetForm();
-        setMessage(true, "success", "Registered successfully!");
-      }, [1000]);
+      // Create user API call
+      const response = await createUser(formData);
 
-      setTimeout(() => {
-        setMessage(true, "info", "Please verify OTP sent on your email!");
-      }, [2000]);
+      if (response.error === false) {
+        setTimeout(() => {
+          resetForm();
+          setMessage(true, "success", "Registered successfully!");
+        }, 1000);
 
-      setTimeout(() => {
+        setTimeout(() => {
+          setMessage(true, "info", "Please verify OTP sent on your email!");
+        }, 2000);
 
-        // Generate OTP API call
-        generateOtp({ email: response.data.email })
-          .then((response) => {
-            if (response.error === false) {
-              setGeneratedUserId(response.data.user_id); // Set the generated user ID
-              setMessage(true, "success", "OTP sent successfully!");
-              handleModalOpen();
-            }
-          })
-          .catch(handleSignUpError);
+        setTimeout(() => {
+          // Generate OTP API call
+          generateOtp({ email: response.data.email })
+            .then((response) => {
+              if (response.error === false) {
+                setGeneratedUserId(response.data.user_id);
+                setMessage(true, "success", "OTP sent successfully!");
+                handleModalOpen();
+              }
+            })
+            .catch((error) => {
+              console.log(error)
+            });
+        }, 3000);
 
-      }, 3000);
+        setIsLoading(false)
+      }
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
     }
-  }
-  const handleSignUpError = (error) => {
-    setMessage(true, "error", error.response?.data.detail || "An error occurred");
+
+    toggleSpinner();
   };
 
   return (
@@ -171,6 +174,11 @@ const SignupWrap = () => {
           onFocusHandler={onFocusHandler}
           valueChangeHandler={valueChangeHandler}
         />
+      )}
+      {isLoading && (
+        <div className="loading-overlay">
+          <Spinner animation="border" variant="warning" />
+        </div>
       )}
     </>
   );

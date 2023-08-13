@@ -27,7 +27,7 @@ const ContactInputField = () => {
             name: "address",
             value: address.value,
             placeholder: "Address",
-            handler: capitaliseDataHandler,
+            handler: valueChangeHandler,
             touched: address.touched,
             hasError: address.hasError,
             error: address.error,
