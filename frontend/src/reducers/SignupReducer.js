@@ -1,4 +1,6 @@
+// Initial state for the signup form
 export const initialStateSignup = {
+    // Fields for user details
     name: { value: "", touched: false, hasError: false, error: "", msgType: "danger" },
     email: { value: "", touched: false, hasError: false, error: "", msgType: "danger" },
     password: { value: "", touched: false, hasError: false, error: "", msgType: "danger" },
@@ -16,7 +18,7 @@ export const initialStateSignup = {
     otpCode: { value: "", touched: false, hasError: false, error: "", msgType: "danger" },
 };
 
-
+// Reducer for the signup form state
 export const signupReducer = (state, action) => {
     switch (action.type) {
 
@@ -46,7 +48,7 @@ export const signupReducer = (state, action) => {
 
 
         case 'SIGNUP_INPUT_CHANGE':
-
+            // Handling special validation for date of birth
             if (action.payload.key === 'dateOfBirth') {
                 const selectedDate = new Date(action.payload.value);
                 const minDate = new Date('1900-01-01');
@@ -66,6 +68,7 @@ export const signupReducer = (state, action) => {
                 }
             }
 
+            // Handling other input changes
             return {
                 ...state,
                 [action.payload.key]: {
@@ -76,6 +79,7 @@ export const signupReducer = (state, action) => {
             }
 
         case 'SIGNUP_INPUT_BLUR':
+            // Handling blur events and validations for all fields
             if (action.payload.value.trim().length === 0) {
                 return {
                     ...state,
@@ -88,6 +92,7 @@ export const signupReducer = (state, action) => {
                 }
             }
 
+            // Handling email validation when email is not in correct format
             if (action.payload.key === 'email' && action.payload.value.indexOf('@gmail.com') === -1) {
                 return {
                     ...state,
@@ -100,6 +105,7 @@ export const signupReducer = (state, action) => {
                 }
             }
 
+            // Handling password validation when password is less than 8 characters
             if (action.payload.key === 'password' && action.payload.value.trim().length < 8) {
                 return {
                     ...state,
@@ -112,6 +118,7 @@ export const signupReducer = (state, action) => {
                 }
             }
 
+            // Handling confirmPassword validation when confirm password is not same as password
             if (action.payload.key === 'confirmPassword' && action.payload.value !== state.password.value) {
                 return {
                     ...state,
@@ -124,6 +131,7 @@ export const signupReducer = (state, action) => {
                 }
             }
 
+            // Handling phoneNumber validation when phoneNumber is not 10 digits long
             if (action.payload.key === 'phoneNumber' && !/^\d{10}$/.test(action.payload.value)) {
                 return {
                     ...state,
@@ -136,6 +144,7 @@ export const signupReducer = (state, action) => {
                 };
             }
 
+            // Handling pincode validation when pincode is not 6 digits long
             if (action.payload.key === 'pincode' && !/^\d{6}$/.test(action.payload.value)) {
                 return {
                     ...state,
@@ -153,7 +162,7 @@ export const signupReducer = (state, action) => {
                 formValid: true // Set formValid to true when all validations pass
             };
 
-        case 'CAPITALISE_DATA':
+        case 'CAPITALISE_DATA': // Capitalizing and updating field value
             const capitalizedValue = action.payload.value.trim().toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase());
 
             return {
@@ -167,7 +176,8 @@ export const signupReducer = (state, action) => {
             }
 
         case 'SIGNUP_VALID_DATA':
-            if (state[action.payload.key].hasError) return state;
+            if (state[action.payload.key].hasError) return state; // Updating valid data
+
             return {
                 ...state,
                 [action.payload.key]: {
@@ -178,7 +188,7 @@ export const signupReducer = (state, action) => {
                 }
             }
 
-        case "SIGNUP_FORM_VALID":
+        case "SIGNUP_FORM_VALID": // Checking if all required fields are filled
             if (
                 state.name.value.length > 0 &&
                 state.email.value.length > 0 &&
@@ -199,7 +209,13 @@ export const signupReducer = (state, action) => {
                 }
             }
 
-        case 'SIGNUP_RESET':
+            return {
+                ...state,
+                formValid: false
+            }
+
+
+        case 'SIGNUP_RESET': // Resetting form to initial state
             return {
                 ...state,
                 ...initialStateSignup, // Reset all fields

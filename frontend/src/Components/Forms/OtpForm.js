@@ -49,7 +49,7 @@ const OtpForm = ({ show, onHide, user_id }) => {
             show={show}
             onHide={onHide}
             backdrop="static"
-            keyboard={false}
+            // keyboard={false}
             className="border-0"
         >
             <Modal.Header className="border-0 d-flex justify-content-center align-items-center">
@@ -61,7 +61,7 @@ const OtpForm = ({ show, onHide, user_id }) => {
                         <Input
                             type="text"
                             label="Enter OTP"
-                            // autoFocus
+                            autoFocus
                             value={otpCode}
                             onChange={handleOtpChange}
                             style={{ letterSpacing: "3px" }}

@@ -1,6 +1,6 @@
 import React from 'react'
 import SignupWrap from "./SignupWrap"
-import { SignUpProvider } from '../../context/SignupContext'
+import { SignUpProvider } from '../../../context/SignupContext'
 
 const Signup = () => {
   return (

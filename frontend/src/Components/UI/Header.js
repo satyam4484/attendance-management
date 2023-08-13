@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useGlobalContext } from '../../context/Context';
-import { Container, Nav, Navbar, NavDropdown, Offcanvas } from 'react-bootstrap';
+import { Container, Nav, Navbar, Offcanvas } from 'react-bootstrap';
 
 const Header = () => {
 
-  const { appName, navbarLinkClickEvent, currentSelected } = useGlobalContext();
+  const { appName, navbarLinkClickEvent, currentSelected, isLoggedIn, logoutUser } = useGlobalContext();
 
   const navList = [
     {
@@ -13,18 +13,22 @@ const Header = () => {
       href: "/"
     },
     {
-      title: "Signup",
+      title: isLoggedIn ? "" : "Signup",
       href: "/auth/signup"
     },
     {
-      title: "Login",
-      href: "/auth/signin"
+      title: isLoggedIn ? "Logout" : "Login",
+      href: isLoggedIn ? "/" : "/auth/signin"
     },
   ];
 
+  const userLogoutHandler = () => {
+    logoutUser();
+  }
+
   return (
     <>
-      {['lg'].map((expand) => (
+      {['md'].map((expand) => (
         <Navbar key={expand} expand={expand} className="bg-body-tertiary mb-3" bg="dark" data-bs-theme="dark">
           <Container fluid>
             <Navbar.Brand as={Link} to="/">{appName}</Navbar.Brand>
@@ -47,7 +51,7 @@ const Header = () => {
                         key={index}
                         as={Link}
                         to={item.href}
-                        onClick={() => navbarLinkClickEvent(item.title)}
+                        onClick={isLoggedIn ? userLogoutHandler : () => navbarLinkClickEvent(item.title)}
                         className={currentSelected === item.title ? "active" : ""}
                       >
                         {item.title}

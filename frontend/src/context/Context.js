@@ -14,10 +14,12 @@ const AppProvider = ({ children }) => {
     dispatch({ type: "SET_NAV_LINK_CURRENT_SELECTED", payload: index });
   };
 
+  // Function to toggle the loading spinner
   const toggleSpinner = (data) => {
     dispatch({ type: "TOGGLE_SPINNER", payload: data });
   };
 
+  // Function to set a message and show a toast message
   const setMessage = (isError, type, message) => {
     dispatch({
       type: "SET_MESSAGE",
@@ -28,8 +30,26 @@ const AppProvider = ({ children }) => {
     toast[type](message); // shows toast message
   }
 
+  // Function to log in a user
+  const loginUser = (data) => {
+    dispatch({ type: "LOGIN_USER", payload: data });
+  };
+
+  // Function to log out a user
+  const logoutUser = () => {
+    dispatch({ type: "LOGOUT_USER" });
+  };
+
   return (
-    <AppContext.Provider value={{ ...state, appName, navbarLinkClickEvent, toggleSpinner, setMessage }}>
+    <AppContext.Provider value={{
+      ...state,
+      appName,
+      navbarLinkClickEvent,
+      toggleSpinner,
+      setMessage,
+      loginUser,
+      logoutUser
+    }}>
       {children}
     </AppContext.Provider>
   );

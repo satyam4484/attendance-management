@@ -3,28 +3,37 @@ import { initialStateSignup, signupReducer } from "../reducers/SignupReducer";
 import { validateEmail, validatePhoneNumber } from "../network/agent";
 import { validatePincode } from "../network/services";
 
-const SignUpContext = createContext();
+const SignUpContext = createContext(); // Create a context for the signup form data and functions
 
+// Provider component that wraps the app and provides the signup context
 const SignUpProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(signupReducer, initialStateSignup);
 
+    const [state, dispatch] = useReducer(signupReducer, initialStateSignup); // Use the signupReducer to manage the state
+
+    // Function to handle input focus
     const onFocusHandler = (e) => {
         dispatch({ type: "SIGNUP_INPUT_FOCUSED", payload: e.target.name })
     }
 
+    // Function to handle input blur and validation
     const onBlurHandler = (e) => {
+        // Dispatch the appropriate action for input blur
         dispatch({
             type: "SIGNUP_INPUT_BLUR",
             payload: {
                 key: e.target.name,
                 value: e.target.value,
                 placeholder: e.target.placeholder,
+                name: e.target.name,
+                label: e.target.label,
             }
         });
 
-        // email validation
+        // Validate email using the validateEmail api
         if (e.target.name === 'email') {
             validateEmail({ email: state.email.value }).then((data) => {
+
+                // Dispatch SIGNUP_VALID_DATA action to update the state
                 dispatch({
                     type: "SIGNUP_VALID_DATA",
                     payload: {
@@ -38,7 +47,7 @@ const SignUpProvider = ({ children }) => {
             });
         }
 
-        // phone number
+        // Validate phoneNumber using the validatePhoneNumber api
         if (e.target.name === 'phoneNumber') {
             validatePhoneNumber({ phoneNumber: state.phoneNumber.value }).then((data) => {
                 dispatch({
@@ -54,7 +63,7 @@ const SignUpProvider = ({ children }) => {
             });
         }
 
-        // pincode validation
+        // Validate pincode using the validatePincode api
         if (e.target.name === "pincode") {
             validatePincode(state.pincode.value).then((data) => {
                 if (data[0].Status === "Success") {
@@ -83,6 +92,7 @@ const SignUpProvider = ({ children }) => {
 
     }
 
+    // Function to handle value change for inputs
     const valueChangeHandler = (e) => {
         dispatch({
             type: "SIGNUP_INPUT_CHANGE",
@@ -93,18 +103,22 @@ const SignUpProvider = ({ children }) => {
         });
     }
 
+    // Function to reset the form
     const resetForm = () => {
         dispatch({ type: "SIGNUP_RESET" });
     }
 
+    // Function to handle gender selection
     const genderHandler = (e) => {
-        dispatch({ type: "SET_GENDER", payload: e.value });
+        dispatch({ type: "SET_GENDER", payload: e.target.value });
     };
 
+    // Function to handle user type selection
     const userTypeHandler = (e) => {
-        dispatch({ type: "SIGNUP_USER_TYPE", payload: e.value });
+        dispatch({ type: "SIGNUP_USER_TYPE", payload: e.target.value });
     };
 
+    // Function to capitalize data in certain fields
     const capitaliseDataHandler = (e) => {
         dispatch({
             type: "CAPITALISE_DATA", payload: {
@@ -114,14 +128,27 @@ const SignUpProvider = ({ children }) => {
         })
     }
 
+    // Provide the state and functions to the context
     return (
-        <SignUpContext.Provider value={{ ...state, onFocusHandler, onBlurHandler, valueChangeHandler, genderHandler, userTypeHandler, capitaliseDataHandler, resetForm }}>
+        <SignUpContext.Provider value={{
+            ...state,
+            onFocusHandler,
+            onBlurHandler,
+            valueChangeHandler,
+            genderHandler,
+            userTypeHandler,
+            capitaliseDataHandler,
+            resetForm
+        }}>
             {children}
         </SignUpContext.Provider>
     )
 };
 
+// Custom hook to use the signup context
 const useSignupContext = () => {
     return useContext(SignUpContext);
 }
+
+// Export the context, provider, and hook
 export { SignUpContext, SignUpProvider, useSignupContext };

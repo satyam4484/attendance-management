@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 import { Form, Row, Col, Button, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useGlobalContext } from "../../context/Context";
-import {
-  createUser,
-  generateOtp,
-} from "../../network/agent";
-import BasicInputField from "./Units/BasicInputField";
-import ContactInputField from "./Units/ContactInputField";
-import OtpForm from "./OtpForm";
-import { useSignupContext } from "../../context/SignupContext";
-
+import { useGlobalContext } from "../../../context/Context";
+import { createUser, generateOtp } from "../../../network/agent";
+import BasicInputField from "./BasicInputField";
+import ContactInputField from "./ContactInputField";
+import OtpForm from "../OtpForm";
+import { useSignupContext } from "../../../context/SignupContext";
 
 const SignupWrap = () => {
 
@@ -39,31 +35,28 @@ const SignupWrap = () => {
   const [showModal, setShowModal] = useState(false);
   const [generatedUserId, setGeneratedUserId] = useState(null);
 
+  const handleModalOpen = () => {
+    setShowModal(true);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (
-      name.hasError ||
-      email.hasError ||
-      password.hasError ||
-      confirmPassword.hasError ||
-      dateOfBirth.hasError ||
-      userType.hasError ||
-      gender.hasError ||
-      !formValid ||
-      !name.touched ||
-      !email.touched ||
-      !password.touched ||
-      !confirmPassword.touched ||
-      !dateOfBirth.touched ||
-      gender.value.length === 0 ||
-      userType.value === 0
-    ) {
-      // If there are errors in the form or any required field is not filled, show an error message
-      setMessage(
-        true,
-        "error",
-        "Please fill out all required fields correctly!"
-      );
+
+    const requiredFields = [
+      { field: name, fieldName: 'Name' },
+      { field: email, fieldName: 'Email' },
+      { field: password, fieldName: 'Password' },
+      { field: confirmPassword, fieldName: 'Confirm Password' },
+      { field: dateOfBirth, fieldName: 'Date of Birth' },
+      { field: pincode, fieldName: 'Pincode' }
+    ];
+
+    const incompleteField = requiredFields.find(field => field.field.hasError || !field.field.touched);
+
+    if (incompleteField || gender.value.length === 0 || userType.value === 0 || !formValid) {
+      const errorMessage = incompleteField ? `Please fill out the "${incompleteField.fieldName}" field correctly!` : "Please fill out all required fields correctly!";
+
+      setMessage(true, "error", errorMessage);
       return;
     }
 
@@ -89,40 +82,43 @@ const SignupWrap = () => {
 
     // Create User API call
     createUser(formData)
-      .then((response) => {
-        if (response.error === false) {
-          toggleSpinner();
-          setTimeout(() => {
-            resetForm();
-            setMessage(true, "success", "Registered successfully!");
-          }, [1000]);
-          setTimeout(() => {
-            setMessage(true, "info", "Please verify OTP sent on your email!");
-          }, [2000]);
-
-          setTimeout(() => {
-
-            // Generate OTP API call
-            generateOtp({ email: response.data.email })
-              .then((response) => {
-                if (response.error === false) {
-                  setGeneratedUserId(response.data.user_id); // Set the generated user ID
-                  setMessage(true, "success", "OTP sent successfully!");
-                  setShowModal(true);
-                }
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-
-          }, 3000);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      .then(handleSignUpSuccess)
+      .catch(handleSignUpError);
 
     toggleSpinner();
+  };
+
+  const handleSignUpSuccess = (response) => {
+    if (response.error === false) {
+      toggleSpinner();
+
+      setTimeout(() => {
+        resetForm();
+        setMessage(true, "success", "Registered successfully!");
+      }, [1000]);
+
+      setTimeout(() => {
+        setMessage(true, "info", "Please verify OTP sent on your email!");
+      }, [2000]);
+
+      setTimeout(() => {
+
+        // Generate OTP API call
+        generateOtp({ email: response.data.email })
+          .then((response) => {
+            if (response.error === false) {
+              setGeneratedUserId(response.data.user_id); // Set the generated user ID
+              setMessage(true, "success", "OTP sent successfully!");
+              handleModalOpen();
+            }
+          })
+          .catch(handleSignUpError);
+
+      }, 3000);
+    }
+  }
+  const handleSignUpError = (error) => {
+    setMessage(true, "error", error.response?.data.detail || "An error occurred");
   };
 
   return (
