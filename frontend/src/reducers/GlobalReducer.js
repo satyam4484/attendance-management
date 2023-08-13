@@ -1,10 +1,13 @@
 
 const initialState = {
   currentSelected: 0,
+  isLoggedIn: false,
   isLoading: false,
+  userCred: {}, // User credentials or information
   error: { isError: false, message: "", type: "error" },
 };
 
+// Define the global reducer function that handles state updates
 const globalReducer = (state, action) => {
   switch (action.type) {
     case "SET_NAV_LINK_CURRENT_SELECTED":
@@ -24,9 +27,19 @@ const globalReducer = (state, action) => {
         },
       }
 
+    case "LOGIN_USER":
+      return { ...state, isLoggedIn: true, userCred: action.payload }
+
+    case "LOGOUT_USER":
+      // Remove token and userData from localStorage and update isLoggedIn and userCred
+      localStorage.removeItem("token");
+      localStorage.removeItem("userData");
+      return { ...state, isLoggedIn: false, userCred: {} }
+
     default:
+      // Return the current state if no action type matches
       return state;
   }
 };
 
-export { globalReducer, initialState }
+export { globalReducer, initialState };

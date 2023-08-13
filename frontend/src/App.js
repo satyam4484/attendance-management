@@ -9,14 +9,20 @@ import Loading from './Components/UI/Loading';
 import { useGlobalContext } from './context/Context';
 
 const App = () => {
-    const { isLoading } = useGlobalContext();
+
+    const { isLoading, toggleSpinner, loginUser } = useGlobalContext();
 
     useEffect(() => {
-        // check if token exist in the localstorage if yes then with that login a user and save is data 
-        // and change the userlogin to true
+        toggleSpinner(true);
 
+        // Check if there's a token in localStorage
+        if (localStorage.getItem('token')) {
+            // Log in the user with the token
+            loginUser(localStorage.getItem('token'));
+        }
+
+        toggleSpinner(false);
     }, []);
-
     return (
         <>
             <Header />
