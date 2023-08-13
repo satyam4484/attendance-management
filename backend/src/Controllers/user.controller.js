@@ -7,60 +7,6 @@ const { Response, generateAuthToken } = require("../services/services");
 
 require("dotenv").config();
 
-/**
- * Get the contact details of the authenticated user.
- * @param {Object} req - The Express request object.
- * @param {Object} res - The Express response object.
- */
-module.exports.getUserContact = async (req, res) => {
-  try {
-    const id = req.user._id;
-
-    // Find the user by _id and populate the 'contact' field
-    const contact = await User.findOne({ _id: id }).populate('contact');
-
-    if (contact) {
-      // Send response with the user's contact details
-      res.send(Response(false, '', contact.contact));
-    } else {
-      // Contact details not found
-      throw 'User Contact Details not found';
-    }
-  } catch (error) {
-    res.send(Response(true, error));
-  }
-};
-
-
-/**
- * Edit and update the contact details of the authenticated user.
- * @param {Object} req - The Express request object.
- * @param {Object} res - The Express response object.
- */
-module.exports.editUserContact = async (req, res) => {
-  try {
-    const data = req.body;
-
-    // Find and update the contact details based on the user's contact reference
-    const contact = await Contact.findOneAndUpdate(
-      { _id: req.user.contact },
-      { $set: data },
-      { new: true }
-    );
-
-    if (contact) {
-      // Send response with the updated contact details
-      res.send(Response(false, '', contact));
-    } else {
-      // Contact details not found
-      throw 'User Contact Details not found';
-    }
-  } catch (error) {
-    console.log(error);
-    res.send(Response(true, error));
-  }
-};
-
 
 
 /**
@@ -129,24 +75,19 @@ module.exports.createUser = async (req, res) => {
     const data = req.body;
     if (data.password === data.confirmPassword) {
       // Create a new contact based on provided Contact data
-      const newContact = await Contact.create(data.Contact);
+      delete data['confirmPassword'];
 
       // Create a new user based on provided user data
-      const user = await new User({
-        userType: data.userType,
-        name: data.name,
-        email: data.email,
-        contact: newContact._id,
-        password: data.password,
-      });
+      const user =  new User({ ...req.body });
 
-      // Save the new user
-      const response = await user.save();
+      await user.save();
 
-      // Send an email to the user if the account is created
-      if (response) {
+      if (user) {
+        // Send an email to the user if the account is created
         // sendMail(response.name, response.otp);
-        res.status(201).send(Response(false, 'Account created successfully', response));
+        const populatedUser = await User.findOne({_id:user._id},{ password: 0, otp: 0 });
+
+        res.status(201).send(Response(false, 'Account created successfully', populatedUser));
       } else {
         throw 'Something went wrong. Please try again';
       }
@@ -154,7 +95,6 @@ module.exports.createUser = async (req, res) => {
       throw "Password didn't match";
     }
   } catch (error) {
-    console.log(error);
     res.send(Response(true, error));
   }
 };
