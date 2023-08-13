@@ -3,6 +3,11 @@ const otpGenerator = require('otp-generator');
 const { Teacher } = require("../models/department.model");
 const { Student } = require("../models/Student.model");
 
+/**
+ * Assigns roles to users based on their userType.
+ * Creates teacher or student records accordingly.
+ * @param {Function} next - The next middleware function.
+ */
 
 async function userRoles(next) {
     try {
@@ -23,6 +28,10 @@ async function userRoles(next) {
     }
 }
 
+/**
+ * Hashes the user's password and generates a unique OTP before saving.
+ * @param {Function} next - The next middleware function.
+ */
 async function hashPasswordAndGenerateUniqueOtp(next) {
     try {
         if (this.isModified("password")) {
@@ -35,6 +44,13 @@ async function hashPasswordAndGenerateUniqueOtp(next) {
     }
 };
 
+
+/**
+ * Handles cascading deletion of related data when a user account is deleted.
+ * @param {Model} Contact - The Contact model.
+ * @param {Object} user - The user object being deleted.
+ * @param {Function} next - The next middleware function.
+ */
 async function deleteUserCascade(Contact, user, next) {
     try {
         if (user.contact) {
