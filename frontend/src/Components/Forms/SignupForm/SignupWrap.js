@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Row, Col, Button, Container, Spinner } from "react-bootstrap";
+import { Form, Row, Col, Button, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useGlobalContext } from "../../../context/Context";
 import { createUser, generateOtp } from "../../../network/agent";
@@ -31,14 +31,13 @@ const SignupWrap = () => {
   const { toggleSpinner, setMessage } = useGlobalContext();
 
   const [showModal, setShowModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [generatedUserId, setGeneratedUserId] = useState(null);
 
   const handleModalOpen = () => {
     setShowModal(true);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     const requiredFields = [
@@ -60,9 +59,6 @@ const SignupWrap = () => {
 
     // Form is valid, proceed with the API call
 
-    setIsLoading(true);
-
-
     const formData = {
       userType: userType.value,
       name: name.value,
@@ -78,11 +74,11 @@ const SignupWrap = () => {
 
     console.log(formData);
 
-    try {
-      toggleSpinner();
 
-      // Create user API call
-      const response = await createUser(formData);
+    toggleSpinner();
+
+    // Create user API call
+    createUser(formData).then((response) => {
 
       if (response.error === false) {
         setTimeout(() => {
@@ -108,13 +104,10 @@ const SignupWrap = () => {
               console.log(error)
             });
         }, 3000);
-
-        setIsLoading(false)
       }
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-    }
+    }).catch((error) => {
+      console.log(error)
+    });
 
     toggleSpinner();
   };
@@ -174,11 +167,6 @@ const SignupWrap = () => {
           onFocusHandler={onFocusHandler}
           valueChangeHandler={valueChangeHandler}
         />
-      )}
-      {isLoading && (
-        <div className="loading-overlay">
-          <Spinner animation="border" variant="warning" />
-        </div>
       )}
     </>
   );
