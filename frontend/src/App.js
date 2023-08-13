@@ -22,6 +22,7 @@ const App = () => {
         }
 
         toggleSpinner(false);
+        // eslint-disable-next-line 
     }, []);
     return (
         <>
