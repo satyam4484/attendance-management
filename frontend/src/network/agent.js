@@ -2,12 +2,8 @@ import axiosClient from "./apiClient.js";
 
 // User signup related services
 
-export const validateEmail = (data) => {
-    return axiosClient().post('user/validate_email', JSON.stringify(data)).then(response => response.data);
-}
-
-export const validatePhoneNumber = (data) => {
-    return axiosClient().post('user/validate_contact', JSON.stringify(data)).then(response => response.data);
+export const validateData = (data) => {
+    return axiosClient().post('user/validate_data', JSON.stringify(data)).then(response => response.data);
 }
 
 export const createUser = (data) => {

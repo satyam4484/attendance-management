@@ -1,6 +1,6 @@
 import React, { createContext, useReducer, useContext } from "react";
 import { initialStateSignup, signupReducer } from "../reducers/SignupReducer";
-import { validateEmail, validatePhoneNumber } from "../network/agent";
+import { validateData } from "../network/agent";
 import { validatePincode } from "../network/services";
 
 const SignUpContext = createContext(); // Create a context for the signup form data and functions
@@ -29,36 +29,25 @@ const SignUpProvider = ({ children }) => {
             }
         });
 
-        // Validate email using the validateEmail api
-        if (e.target.name === 'email') {
-            validateEmail({ email: state.email.value }).then((data) => {
+        // Validate email and phoneNumber using the validateEmailPhoneData api
+        if (e.target.name === "email" || e.target.name === "phoneNumber") {
+            const data = {
+                [e.target.name]: state[e.target.name].value,
+            };
 
-                // Dispatch SIGNUP_VALID_DATA action to update the state
+            validateData(data).then((response) => {
+                const fieldName = e.target.name;
                 dispatch({
                     type: "SIGNUP_VALID_DATA",
                     payload: {
-                        key: "email",
-                        error: data.error,
-                        // value: data.message,
-                        value: "Email already taken! Please try different one!",
-                        msgType: "danger"
-                    }
-                });
-            });
-        }
-
-        // Validate phoneNumber using the validatePhoneNumber api
-        if (e.target.name === 'phoneNumber') {
-            validatePhoneNumber({ phoneNumber: state.phoneNumber.value }).then((data) => {
-                dispatch({
-                    type: "SIGNUP_VALID_DATA",
-                    payload: {
-                        key: "phoneNumber",
-                        error: data.error,
-                        // value: data.message,
-                        value: "Phone Number already taken! Please try different one!",
-                        msgType: "danger"
-                    }
+                        key: fieldName,
+                        error: response.error,
+                        value: response.error
+                            ? `${fieldName === "email" ? "Email" : "Phone Number"
+                            } already taken! Please try a different one!`
+                            : "",
+                        msgType: "danger",
+                    },
                 });
             });
         }
