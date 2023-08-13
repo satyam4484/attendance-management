@@ -108,11 +108,6 @@ const SignUpProvider = ({ children }) => {
         dispatch({ type: "SIGNUP_RESET" });
     }
 
-    // Function to handle gender selection
-    const genderHandler = (e) => {
-        dispatch({ type: "SET_GENDER", payload: e.target.value });
-    };
-
     // Function to handle user type selection
     const userTypeHandler = (e) => {
         dispatch({ type: "SIGNUP_USER_TYPE", payload: e.target.value });
@@ -135,7 +130,6 @@ const SignUpProvider = ({ children }) => {
             onFocusHandler,
             onBlurHandler,
             valueChangeHandler,
-            genderHandler,
             userTypeHandler,
             capitaliseDataHandler,
             resetForm

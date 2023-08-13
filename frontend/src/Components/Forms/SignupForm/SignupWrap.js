@@ -16,10 +16,8 @@ const SignupWrap = () => {
     password,
     confirmPassword,
     formValid,
-    gender,
     userType,
     phoneNumber,
-    dateOfBirth,
     pincode,
     city,
     address,
@@ -47,13 +45,12 @@ const SignupWrap = () => {
       { field: email, fieldName: 'Email' },
       { field: password, fieldName: 'Password' },
       { field: confirmPassword, fieldName: 'Confirm Password' },
-      { field: dateOfBirth, fieldName: 'Date of Birth' },
       { field: pincode, fieldName: 'Pincode' }
     ];
 
     const incompleteField = requiredFields.find(field => field.field.hasError || !field.field.touched);
 
-    if (incompleteField || gender.value.length === 0 || userType.value === 0 || !formValid) {
+    if (incompleteField || userType.value === 0 || !formValid) {
       const errorMessage = incompleteField ? `Please fill out the "${incompleteField.fieldName}" field correctly!` : "Please fill out all required fields correctly!";
 
       setMessage(true, "error", errorMessage);
@@ -64,21 +61,19 @@ const SignupWrap = () => {
     toggleSpinner();
 
     const formData = {
+      userType: userType.value,
       name: name.value,
       email: email.value,
+      phoneNumber: phoneNumber.value,
+      state: stateNew.value,
+      city: city.value,
+      pincode: pincode.value,
+      address: address.value,
       password: password.value,
       confirmPassword: confirmPassword.value,
-      userType: userType.value,
-      Contact: {
-        phoneNumber: phoneNumber.value,
-        dateOfBirth: dateOfBirth.value,
-        pincode: pincode.value,
-        gender: gender.value,
-        address: address.value,
-        state: stateNew.value,
-        city: city.value,
-      },
     };
+
+    console.log(formData);
 
     // Create User API call
     createUser(formData)

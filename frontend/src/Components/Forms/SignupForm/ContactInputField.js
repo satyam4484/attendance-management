@@ -2,11 +2,10 @@ import React from "react"
 import Input from "../Units/Input";
 import FieldError from "../Units/FieldError";
 import { useSignupContext } from "../../../context/SignupContext";
-import { genderOptions } from "../../Services/appdata";
 
 const ContactInputField = () => {
 
-    const { phoneNumber, dateOfBirth, address, stateNew, pincode, gender, city, onBlurHandler, onFocusHandler, valueChangeHandler, genderHandler, capitaliseDataHandler } = useSignupContext();
+    const { phoneNumber, address, stateNew, pincode, city, onBlurHandler, onFocusHandler, valueChangeHandler, capitaliseDataHandler } = useSignupContext();
 
     const inputFields = [
         {
@@ -20,21 +19,6 @@ const ContactInputField = () => {
             hasError: phoneNumber.hasError,
             error: phoneNumber.error,
             msgType: phoneNumber.msgType
-        },
-        {
-            label: "Date of Birth",
-            type: "date",
-            name: "dateOfBirth",
-            value: dateOfBirth.value,
-            placeholder: "Date of Birth",
-            handler: valueChangeHandler,
-            touched: dateOfBirth.touched,
-            hasError: dateOfBirth.hasError,
-            error: dateOfBirth.error,
-            msgType: dateOfBirth.msgType,
-            min: "1900-01-01",
-            max: new Date().toISOString().split("T")[0],
-            className: 'cursor-pointer',
         },
         {
             as: "textarea",
@@ -115,22 +99,6 @@ const ContactInputField = () => {
                     />
                 </div>
             ))}
-
-            <select
-                className="custom-select"
-                id="gender"
-                name="gender"
-                value={gender.value}
-                onChange={genderHandler}
-            >
-                <option value="">Select Gender</option>
-                {genderOptions.map(option => (
-                    <option key={option.value} value={option.value} className="custom-option">
-                        {option.label}
-                    </option>
-                ))}
-            </select>
-
 
         </>
     )
