@@ -6,26 +6,10 @@ const organizationSchema = new Schema({
     ref: "User",
     required: true,
   },
-  organizationName: {
-    type: String,
-    required: true,
-  },
-  state: {
-    type: String,
-    required: true,
-  },
-  city: {
-    type: String,
-    required: true,
-  },
-  pincode: {
-    type: String,
-    required: true,
-  },
-  address: {
-    type: String,
-    required: true,
-  },
+  is_verified:{
+    type:Boolean,
+    default:false
+  }
 });
 
 

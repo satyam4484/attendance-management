@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const otpGenerator = require('otp-generator');
 const { Teacher } = require("../models/department.model");
 const { Student } = require("../models/Student.model");
+const { Organization } = require("../models/organization.model");
 
 /**
  * Assigns roles to users based on their userType.
@@ -11,11 +12,18 @@ const { Student } = require("../models/Student.model");
 
 async function userRoles(next) {
     try {
-        if (this.userType === 2) {
+        if (this.userType === 1) {
+            const newOganization = await Organization.create({
+                user: this._id
+            });
+            await newOganization.save();
+
+        } else if (this.userType === 2) {
             const newTeacher = await Teacher.create({
                 user: this._id
             });
             await newTeacher.save();
+
         } else if (this.userType === 3) {
             const newStudent = await Student.create({
                 user: this._id
@@ -51,13 +59,13 @@ async function hashPasswordAndGenerateUniqueOtp(next) {
  * @param {Object} user - The user object being deleted.
  * @param {Function} next - The next middleware function.
  */
-async function deleteUserCascade(Contact, user, next) {
+async function deleteUserCascade(user, next) {
     try {
-        if (user.contact) {
-            await Contact.deleteOne({ _id: user.contact });
+        if (user.userType === 1) {
+            await Organization.deleteOne({ user: user._id });
         }
-        // delete if the current user is teacher than delete the teacher field also
-        if (user.userType === 2) {
+        else if (user.userType === 2) {
+            // delete if the current user is teacher than delete the teacher field also
             await Teacher.deleteOne({ user: user._id });
         } else if (user.userType === 3) {
             // delete the related student record
