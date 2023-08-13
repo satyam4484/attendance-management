@@ -45,7 +45,7 @@ const SignupWrap = () => {
       { field: email, fieldName: 'Email' },
       { field: password, fieldName: 'Password' },
       { field: confirmPassword, fieldName: 'Confirm Password' },
-      { field: pincode, fieldName: 'Pincode' }
+      { field: phoneNumber, fieldName: 'Phone Number' },
     ];
 
     const incompleteField = requiredFields.find(field => field.field.hasError || !field.field.touched);

@@ -1,7 +1,6 @@
 import React, { createContext, useReducer, useContext } from "react";
 import { initialStateSignup, signupReducer } from "../reducers/SignupReducer";
 import { validateData } from "../network/agent";
-import { validatePincode } from "../network/services";
 
 const SignUpContext = createContext(); // Create a context for the signup form data and functions
 
@@ -51,34 +50,6 @@ const SignUpProvider = ({ children }) => {
                 });
             });
         }
-
-        // Validate pincode using the validatePincode api
-        if (e.target.name === "pincode") {
-            validatePincode(state.pincode.value).then((data) => {
-                if (data[0].Status === "Success") {
-                    dispatch({
-                        type: "SIGNUP_VALID_DATA",
-                        payload: {
-                            key: "pincode",
-                            error: "Success",
-                            value: `${data[0].PostOffice[0].District}, ${data[0].PostOffice[0].State}`,
-                            msgType: "success"
-                        }
-                    });
-                } else {
-                    dispatch({
-                        type: "SIGNUP_VALID_DATA",
-                        payload: {
-                            key: "pincode",
-                            error: "Error",
-                            value: "Pincode does not match with district/state!",
-                            msgType: "danger"
-                        }
-                    });
-                }
-            });
-        }
-
     }
 
     // Function to handle value change for inputs
