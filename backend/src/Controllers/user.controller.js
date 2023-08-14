@@ -20,7 +20,7 @@ module.exports.getUser = async (req, res) => {
     const user = await User.findOne(
       { _id: req.user._id },
       { password: 0, otp: 0 }
-    ).populate('contact');
+    );
 
     if (user) {
       // Send response with the user's profile
