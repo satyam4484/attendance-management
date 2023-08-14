@@ -14,6 +14,7 @@ app.use(bodyParser.text())
 const userRouter = require("./src/Routes/user.routes");
 const organizationRouter = require('./src/Routes/organization.routes');
 const departmentRouter = require('./src/Routes/department.routes');
+const adminRouter = require("./src/Routes/admin.routes");
 
 app.use(cors({
     origin: '*'
@@ -21,6 +22,7 @@ app.use(cors({
 app.use('/api/user',userRouter);
 app.use('/api/organization',organizationRouter);
 app.use('/api/department',departmentRouter);
+app.use('/api/admin/',adminRouter);
 
 app.listen(8000,()=>{
     console.log("listening to port 8000")
