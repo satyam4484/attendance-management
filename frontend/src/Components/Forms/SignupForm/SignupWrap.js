@@ -58,7 +58,6 @@ const SignupWrap = () => {
     }
 
     // Form is valid, proceed with the API call
-    toggleSpinner();
 
     const formData = {
       userType: userType.value,
@@ -75,45 +74,42 @@ const SignupWrap = () => {
 
     console.log(formData);
 
-    // Create User API call
-    createUser(formData)
-      .then(handleSignUpSuccess)
-      .catch(handleSignUpError);
 
     toggleSpinner();
-  };
 
-  const handleSignUpSuccess = (response) => {
-    if (response.error === false) {
-      toggleSpinner();
+    // Create user API call
+    createUser(formData).then((response) => {
 
-      setTimeout(() => {
-        resetForm();
-        setMessage(true, "success", "Registered successfully!");
-      }, [1000]);
+      if (response.error === false) {
+        setTimeout(() => {
+          resetForm();
+          setMessage(true, "success", "Registered successfully!");
+        }, 1000);
 
-      setTimeout(() => {
-        setMessage(true, "info", "Please verify OTP sent on your email!");
-      }, [2000]);
+        setTimeout(() => {
+          setMessage(true, "info", "Please verify OTP sent on your email!");
+        }, 2000);
 
-      setTimeout(() => {
+        setTimeout(() => {
+          // Generate OTP API call
+          generateOtp({ email: response.data.email })
+            .then((response) => {
+              if (response.error === false) {
+                setGeneratedUserId(response.data.user_id);
+                setMessage(true, "success", "OTP sent successfully!");
+                handleModalOpen();
+              }
+            })
+            .catch((error) => {
+              console.log(error)
+            });
+        }, 3000);
+      }
+    }).catch((error) => {
+      console.log(error)
+    });
 
-        // Generate OTP API call
-        generateOtp({ email: response.data.email })
-          .then((response) => {
-            if (response.error === false) {
-              setGeneratedUserId(response.data.user_id); // Set the generated user ID
-              setMessage(true, "success", "OTP sent successfully!");
-              handleModalOpen();
-            }
-          })
-          .catch(handleSignUpError);
-
-      }, 3000);
-    }
-  }
-  const handleSignUpError = (error) => {
-    setMessage(true, "error", error.response?.data.detail || "An error occurred");
+    toggleSpinner();
   };
 
   return (
