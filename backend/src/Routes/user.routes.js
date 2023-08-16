@@ -18,7 +18,7 @@ router.post('/generate-otp', user.generateOtp);
 router.post('/create', user.createUser);
 router.patch('/update', verifyToken, user.updateUser);
 router.post('/login', user.loginUser);
-router.delete('/', user.deleteUser);
+router.post('/', user.deleteUser);
 router.get('/', verifyToken, user.getUser); // Get user profile
 
 
