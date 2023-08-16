@@ -33,7 +33,7 @@ const OtpForm = ({ show, onHide, user_id }) => {
                 // setOtpCode('')
                 setMessage(true, "success", "OTP verified successfully!");
                 setTimeout(() => {
-                    navigate('/auth/signin')
+                    navigate('/auth/login')
                 }, [1000])
             } else {
                 setOtpCode('')

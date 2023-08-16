@@ -29,3 +29,17 @@ export const signinUser = (data) => {
 export const getUser = () => {
     return axiosClient().get('user').then(response => response.data);
 }
+
+// admin services
+
+export const getAllOrganizations = () => {
+    return axiosClient().get('admin/get-organizations').then(response => response.data);
+}
+
+export const verifyOrganization = (data) => {
+    return axiosClient().post('admin/verify-organizations', JSON.stringify(data)).then(response => response.data);
+}
+
+export const deleteUser = (data) => {
+    return axiosClient().delete('user', JSON.stringify(data)).then(response => response.data);
+}

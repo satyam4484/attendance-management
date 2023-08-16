@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Form, Row, Col, Button, Container, InputGroup } from "react-bootstrap";
-import { Link ,useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Icon from '../../UI/Icon';
 import Input from '../Units/Input';
 import { signinUser, getUser } from "../../../network/agent";
@@ -13,14 +13,14 @@ const intialState = {
 
 const SignIn = () => {
 
-  const { toggleSpinner, setMessage, loginUser ,isLoggedIn} = useGlobalContext();
-  const navigate  = useNavigate();
+  const { toggleSpinner, setMessage, loginUser, isLoggedIn } = useGlobalContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if(isLoggedIn) {
+    if (isLoggedIn) {
       navigate("/dashboard");
     }
-  },[]);
+  }, []);
 
   const [seePassword, setSeePassword] = useState("password");
   const [data, setData] = useState(intialState);
@@ -79,9 +79,9 @@ const SignIn = () => {
           getUser().then(({ error, data }) => {
             if (!error) {
               localStorage.setItem("userData", JSON.stringify(data));
-              loginUser({token:response.data.token,userCred:data});
+              loginUser({ token: response.data.token, userCred: data });
               setData(intialState);
-              
+
               // redirect user
               navigate('/dashboard');
             }
@@ -147,7 +147,7 @@ const SignIn = () => {
             <div className="d-flex align-items-center justify-content-center flex-column" >
               <p className="p-0 m-0 text-muted">Don't have an account?</p>
               <p className="p-0 m-0 text-muted">
-                <Link to="/auth/signup">Create New Account</Link>{" "}
+                <Link to="/auth/create">Create New Account</Link>{" "}
                 <span>Now</span>
               </p>
               <p className="mt-5 mb-0 text-muted" style={{ fontSize: "12px" }}>Go back to <Link to="/" >Home</Link> </p>
