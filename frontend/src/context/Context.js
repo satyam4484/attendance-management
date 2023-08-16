@@ -1,4 +1,5 @@
 import React, { createContext, useReducer, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { globalReducer, initialState } from "../reducers/GlobalReducer";
@@ -38,6 +39,7 @@ const AppProvider = ({ children }) => {
   // Function to log out a user
   const logoutUser = () => {
     dispatch({ type: "LOGOUT_USER" });
+    
   };
 
   return (
