@@ -18,6 +18,7 @@ const Message = () => {
                 closeOnClick
                 rtl={false}
                 draggable
+                pauseOnHover={false}
                 className="mt-5"
             >
                 {isError && <div>{message}</div>}

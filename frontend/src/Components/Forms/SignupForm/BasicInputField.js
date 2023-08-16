@@ -133,6 +133,16 @@ const BasicInputField = () => {
                     </option>
                 ))}
             </select>
+            {/* 
+            
+            if userType selected as teacher 2 & student 3 then
+                show select field and select organizations (only show verified organizations)
+            after selecting organization
+                show select field and select departments
+            
+            SEND Only Department in form data
+
+             */}
         </>
     )
 }

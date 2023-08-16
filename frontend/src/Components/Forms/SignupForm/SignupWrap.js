@@ -140,7 +140,7 @@ const SignupWrap = () => {
               <div className="d-flex align-items-center justify-content-center flex-column">
                 <p className="p-0 m-0 text-muted">Already have an account?</p>
                 <p className="p-0 m-0 text-muted">
-                  <Link to="/auth/signin">Login</Link> <span>Now</span>
+                  <Link to="/auth/login">Login</Link> <span>Now</span>
                 </p>
 
                 <p
