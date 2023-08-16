@@ -9,18 +9,8 @@ const departmentSchema = new Schema({
   name: {
     type: String,
     required: true,
+    unique:true
   },
-  head: {
-    type: Schema.Types.ObjectId,
-    ref: "Teacher",
-    required: true,
-  },
-  members: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Teacher",
-    },
-  ],
 });
 
 
