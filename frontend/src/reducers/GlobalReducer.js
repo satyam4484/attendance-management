@@ -4,6 +4,7 @@ const initialState = {
   isLoggedIn: false,
   isLoading: false,
   userCred: {}, // User credentials or information
+  token:"",
   error: { isError: false, message: "", type: "error" },
 };
 
@@ -28,12 +29,13 @@ const globalReducer = (state, action) => {
       }
 
     case "LOGIN_USER":
-      return { ...state, isLoggedIn: true, userCred: action.payload }
+      return { ...state, isLoggedIn: true, token:action.payload.token,userCred:action.payload.userCred }
 
     case "LOGOUT_USER":
       // Remove token and userData from localStorage and update isLoggedIn and userCred
       localStorage.removeItem("token");
       localStorage.removeItem("userData");
+      
       return { ...state, isLoggedIn: false, userCred: {} }
 
     default:

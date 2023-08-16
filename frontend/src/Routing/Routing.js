@@ -5,6 +5,8 @@ const Spinner = lazy(() => import('../Components/UI/Loading'));
 const Homepage = lazy(() => import('../Components/UI/Homepage'));
 const SignUp = lazy(() => import('../Components/Forms/SignupForm/Signup'));
 const SignIn = lazy(() => import('../Components/Forms/SigninForm/Signin'));
+const DashBoard = lazy(()=> import('../Components/DashBoard/DashBoard'));
+
 
 const Routing = () => {
   return (
@@ -12,9 +14,10 @@ const Routing = () => {
       <Routes>
         <Route path="/" exact element={<Homepage />} />
         <Route path="/auth" element={<Outlet />}>
-          <Route path="signup" element={<SignUp />} />
-          <Route path="signin" element={<SignIn />} />
+          <Route path="create" element={<SignUp />} />
+          <Route path="login" element={<SignIn />} />
         </Route>
+        <Route path="/dashboard" element={<DashBoard/>}/>
       </Routes>
     </Suspense>
   );

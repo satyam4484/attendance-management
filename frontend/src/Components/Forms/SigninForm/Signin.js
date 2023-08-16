@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Row, Col, Button, Container, InputGroup } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 import Icon from '../../UI/Icon';
 import Input from '../Units/Input';
 import { signinUser, getUser } from "../../../network/agent";
@@ -13,11 +13,19 @@ const intialState = {
 
 const SignIn = () => {
 
-  const { toggleSpinner, setMessage, loginUser } = useGlobalContext();
+  const { toggleSpinner, setMessage, loginUser ,isLoggedIn} = useGlobalContext();
+  const navigate  = useNavigate();
+
+  useEffect(() => {
+    if(isLoggedIn) {
+      navigate("/dashboard");
+    }
+  },[]);
 
   const [seePassword, setSeePassword] = useState("password");
   const [data, setData] = useState(intialState);
 
+  // usenavigate
   const togglePasswordVisibility = (e) => {
     if (seePassword === "password") {
       setSeePassword("text");
@@ -71,8 +79,11 @@ const SignIn = () => {
           getUser().then(({ error, data }) => {
             if (!error) {
               localStorage.setItem("userData", JSON.stringify(data));
-              loginUser(data);
+              loginUser({token:response.data.token,userCred:data});
               setData(intialState);
+              
+              // redirect user
+              navigate('/dashboard');
             }
           });
         } else {

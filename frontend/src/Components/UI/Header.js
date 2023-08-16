@@ -1,11 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../../context/Context';
 import { Container, Nav, Navbar, Offcanvas } from 'react-bootstrap';
 
 const Header = () => {
 
   const { appName, navbarLinkClickEvent, currentSelected, isLoggedIn, logoutUser } = useGlobalContext();
+  const navigate = useNavigate();
+
+  const userLogoutHandler = () => {
+    logoutUser();
+    navigate("/auth/login");
+  }
 
   const navList = [
     {
@@ -15,12 +21,12 @@ const Header = () => {
     },
     {
       title: "Signup",
-      href: "/auth/signup",
+      href: "/auth/create",
       show: !isLoggedIn
     },
     {
       title: "Login",
-      href: "/auth/signin",
+      href: "/auth/login",
       show: !isLoggedIn
     },
   ];
@@ -58,7 +64,7 @@ const Header = () => {
                     )
                   ))}
                   {isLoggedIn && (
-                    <Nav.Link onClick={logoutUser}>Logout</Nav.Link>
+                    <Nav.Link onClick={userLogoutHandler}>Logout</Nav.Link>
                   )}
                 </Nav>
               </Offcanvas.Body>

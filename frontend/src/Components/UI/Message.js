@@ -17,7 +17,6 @@ const Message = () => {
                 newestOnTop={false}
                 closeOnClick
                 rtl={false}
-                pauseOnFocusLoss
                 draggable
                 className="mt-5"
             >
