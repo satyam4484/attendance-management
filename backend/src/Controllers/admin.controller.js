@@ -1,42 +1,49 @@
 const { Response } = require("../services/services");
 const { Organization } = require("../models/organization.model");
 
-
+// Get a list of organizations (accessible by UserType 0)
 module.exports.getOrganizationList = async (req, res) => {
     try {
         if (req.user.userType === 0) {
+            // Retrieve all organizations and populate 'user' field with 'name' and '_id'
             const data = await Organization.find().populate({
                 path: 'user',
                 select: 'name _id'
             });
             res.send(Response(false, data));
         } else {
-            throw "You Don't have access";
+            throw "You don't have access to this action";
         }
     } catch (error) {
         res.send(Response(true, error));
     }
 };
 
+// Verify an organization (accessible by UserType 0)
 module.exports.verifyOrganization = async (req, res) => {
     try {
         if (req.user.userType === 0) {
-            const org = req.body.organization_id;
-            const organization = await Organization.findOneAndUpdate({ _id: org }, { $set: { is_verified: true } }, { new: true }).populate({
+            const orgId = req.body.organization_id;
+            
+            // Update the 'is_verified' field of the organization and retrieve the updated organization
+            const organization = await Organization.findOneAndUpdate(
+                { _id: orgId },
+                { $set: { is_verified: true } },
+                { new: true }
+            ).populate({
                 path: 'user',
                 select: 'name _id'
             });
+            
             if (organization) {
-                res.send(Response(false, "Organization mark as verified", organization));
+                res.send(Response(false, "Organization marked as verified", organization));
             } else {
-                throw "Something went wrong try again";
+                throw "Failed to update organization verification status";
             }
-        }else{
-            throw "You Don't have access";
+        } else {
+            throw "You don't have access to this action";
         }
-
     } catch (error) {
         res.send(Response(true, error));
     }
-}
-
+};

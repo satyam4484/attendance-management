@@ -20,7 +20,7 @@ async function verifyToken(req, res, next) {
                 req.user = user;
                 if(user.userType === 1) {
                     const organization = await Organization.findOne({user:user._id});
-                    req.Organization = organization;
+                    req.organization = organization;
                 }else if(user.userType === 2) {
                     const teacher = await Teacher.findOne({user:user._id});
                     req.teacher = teacher;
