@@ -19,7 +19,7 @@ const Message = () => {
                 rtl={false}
                 pauseOnFocusLoss
                 draggable
-                pauseOnHover
+                className="mt-5"
             >
                 {isError && <div>{message}</div>}
             </ToastContainer>
