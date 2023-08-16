@@ -63,29 +63,25 @@ const SignIn = () => {
     toggleSpinner();
 
     signinUser({ email: data.email, password: data.password })
-      .then(handleSignInSuccess)
-      .catch(handleSignInError);
-  };
+      .then((response) => {
+        if (response.error === false) {
+          setMessage(true, "success", "Logged in successfully!");
+          localStorage.setItem("token", response.data.token);
 
-  const handleSignInSuccess = (response) => {
-    if (response.error === false) {
-      setMessage(true, "success", "Logged in successfully!");
-      localStorage.setItem("token", response.data.token);
-
-      getUser().then(({ error, data }) => {
-        if (!error) {
-          localStorage.setItem("userData", JSON.stringify(data));
-          loginUser(data);
-          setData(intialState);
+          getUser().then(({ error, data }) => {
+            if (!error) {
+              localStorage.setItem("userData", JSON.stringify(data));
+              loginUser(data);
+              setData(intialState);
+            }
+          });
+        } else {
+          setMessage(true, "error", "Invalid email or password!");
         }
-      });
-    } else {
-      setMessage(true, "error", "Invalid email or password!");
-    }
-  };
-
-  const handleSignInError = (error) => {
-    setMessage(true, "error", error.response?.data.detail || "An error occurred");
+      })
+      .catch((error) => {
+        console.log(error);
+      })
   };
 
   return (

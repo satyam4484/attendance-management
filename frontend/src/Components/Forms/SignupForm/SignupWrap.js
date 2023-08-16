@@ -72,19 +72,15 @@ const SignupWrap = () => {
       confirmPassword: confirmPassword.value,
     };
 
-    console.log(formData);
-
-
     toggleSpinner();
 
     // Create user API call
     createUser(formData).then((response) => {
 
       if (response.error === false) {
-        setTimeout(() => {
-          resetForm();
-          setMessage(true, "success", "Registered successfully!");
-        }, 1000);
+
+        resetForm();
+        setMessage(true, "success", "Registered successfully!");
 
         setTimeout(() => {
           setMessage(true, "info", "Please verify OTP sent on your email!");
@@ -96,8 +92,8 @@ const SignupWrap = () => {
             .then((response) => {
               if (response.error === false) {
                 setGeneratedUserId(response.data.user_id);
-                setMessage(true, "success", "OTP sent successfully!");
                 handleModalOpen();
+                setMessage(true, "success", "OTP sent successfully!");
               }
             })
             .catch((error) => {

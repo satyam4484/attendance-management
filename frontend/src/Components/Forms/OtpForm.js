@@ -34,7 +34,7 @@ const OtpForm = ({ show, onHide, user_id }) => {
                 setMessage(true, "success", "OTP verified successfully!");
                 setTimeout(() => {
                     navigate('/auth/signin')
-                }, [2000])
+                }, [1000])
             } else {
                 setOtpCode('')
                 setMessage(true, "error", "Invalid OTP! Please try again!");

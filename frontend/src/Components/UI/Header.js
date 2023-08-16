@@ -10,21 +10,20 @@ const Header = () => {
   const navList = [
     {
       title: "About",
-      href: "/"
+      href: "/",
+      show: isLoggedIn || !isLoggedIn
     },
     {
-      title: isLoggedIn ? "" : "Signup",
-      href: "/auth/signup"
+      title: "Signup",
+      href: "/auth/signup",
+      show: !isLoggedIn
     },
     {
-      title: isLoggedIn ? "Logout" : "Login",
-      href: isLoggedIn ? "/" : "/auth/signin"
+      title: "Login",
+      href: "/auth/signin",
+      show: !isLoggedIn
     },
   ];
-
-  const userLogoutHandler = () => {
-    logoutUser();
-  }
 
   return (
     <>
@@ -45,19 +44,22 @@ const Header = () => {
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                  {navList.map((item, index) => {
-                    return (
+                  {navList.map((item, index) => (
+                    item.show && (
                       <Nav.Link
                         key={index}
                         as={Link}
                         to={item.href}
-                        onClick={isLoggedIn ? userLogoutHandler : () => navbarLinkClickEvent(item.title)}
+                        onClick={() => navbarLinkClickEvent(item.title)}
                         className={currentSelected === item.title ? "active" : ""}
                       >
                         {item.title}
                       </Nav.Link>
-                    );
-                  })}
+                    )
+                  ))}
+                  {isLoggedIn && (
+                    <Nav.Link onClick={logoutUser}>Logout</Nav.Link>
+                  )}
                 </Nav>
               </Offcanvas.Body>
             </Navbar.Offcanvas>
