@@ -41,5 +41,5 @@ export const verifyOrganization = (data) => {
 }
 
 export const deleteUser = (data) => {
-    return axiosClient().delete('user', JSON.stringify(data)).then(response => response.data);
+    return axiosClient().post('user', JSON.stringify(data)).then(response => response.data);
 }

@@ -24,13 +24,14 @@ const Admin = () => {
 
   const fetchOrganizations = async () => {
     const response = await getAllOrganizations();
-    setOrganizations(response.message);
+    setOrganizations(response.data);
   };
 
   const handleVerifyOrganization = async (organizationId, isVerified) => {
     try {
       const response = await verifyOrganization({ organization_id: organizationId });
 
+      
       // Check if the response indicates success
       if (!response.error) {
         setMessage(true, "success", "Organization verified successfully!");

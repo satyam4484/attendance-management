@@ -10,7 +10,7 @@ module.exports.getOrganizationList = async (req, res) => {
                 path: 'user',
                 select: 'name _id'
             });
-            res.send(Response(false, data));
+            res.send(Response(false, "",data));
         } else {
             throw "You don't have access to this action";
         }
