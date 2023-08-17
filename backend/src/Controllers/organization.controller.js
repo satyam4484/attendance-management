@@ -7,12 +7,15 @@ module.exports.getTeachers = async (req, res) => {
     try {
         // Check if the user type is 1 and the organization is verified
         if (req.user.userType === 1 && req.organization.is_verified) {
-            const department = await Department.findOne({ ...req.body });
-            const teachers = await Teacher.find({ department: department._id },{department:0}).populate([
+            const teachers = await Teacher.find({ ...req.body }).populate([
                 {
                     path: 'user',
-                    select: 'name _id'
+                    select: 'name _id email phoneNumber'
                 },
+                {
+                    path: "department",
+                    select: "name"
+                }
             ]
             ) // Find teachers belonging to the found department
             res.send(Response(false, "", teachers)); // Respond with the list of teachers
@@ -64,18 +67,19 @@ module.exports.updateOrganization = async (req, res) => {
 module.exports.verifyTeacher = async (req, res) => {
     try {
         if (req.user.userType === 1 || req.user.userType === 2) {
-            const data = req.body.teachers;
-            for (val in data) {
-                const teacher = await Teacher.findOneAndUpdate(
-                    { _id: data[val].id },
-                    { $set: { verified: true } },
-                    { new: true }
-                );
-                if (!teacher) {
-                    throw "Teacher with the current id does not exist";
-                }
+            const teacher = await Teacher.findOneAndUpdate(
+                { _id: req.body.id },
+                { $set: { verified: true } },
+                { new: true }
+            );
+
+            if (teacher) {
+                res.send(Response(false, "Teachers account verified"));
+
+            }else{
+                throw "Something went wrong try again"
             }
-            res.send(Response(false, "Teachers account verified"));
+
         } else {
             throw "Access Denied";
         }
