@@ -19,6 +19,19 @@ module.exports.getOrganizationList = async (req, res) => {
     }
 };
 
+module.exports.getOrganization = async (req,res) => {
+    try{
+        const _id =req.params.id;
+        const organization = await Organization.findOne({_id}).populate({
+            path:"user",
+            select:"-password -otp"
+        });
+        res.send(Response(false,"",organization));
+    }catch(error) {
+        res.send(Response(false,error));
+    }
+}
+
 // Verify an organization (accessible by UserType 0)
 module.exports.verifyOrganization = async (req, res) => {
     try {
