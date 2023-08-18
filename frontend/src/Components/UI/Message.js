@@ -13,12 +13,13 @@ const Message = () => {
             <ToastContainer
                 position="top-right"
                 autoClose={1500}
-                hideProgressBar={false}
-                newestOnTop={false}
+                hideProgressBar
+                newestOnTop
                 closeOnClick
                 rtl={false}
                 draggable
                 pauseOnHover={false}
+                theme="colored"
                 className="mt-5"
             >
                 {isError && <div>{message}</div>}

@@ -31,7 +31,7 @@ const Admin = () => {
     try {
       const response = await verifyOrganization({ organization_id: organizationId });
 
-      
+
       // Check if the response indicates success
       if (!response.error) {
         setMessage(true, "success", "Organization verified successfully!");
@@ -92,8 +92,8 @@ const Admin = () => {
             <th>Sr. no</th>
             <th>Name</th>
             <th onClick={handleIsVerifiedFilter} style={{ cursor: 'pointer' }}>
-              Verify
-              <Icon name={isVerifiedFiltered ? "ArrowUp" : "ArrowDown"} size="20" />
+              {!isVerifiedFiltered ? "Verify" : "Not verified"}
+              <Icon name={!isVerifiedFiltered ? "ArrowUp" : "ArrowDown"} size="20" />
             </th>
             <th>Actions</th>
           </tr>
@@ -110,13 +110,13 @@ const Admin = () => {
                     handleShow();
                   }}
                   style={{ cursor: 'pointer' }}>
-                  <span className="float-start">
-                    <Icon name={is_verified ? "BadgeCheck" : "BadgeX"} color={is_verified ? "green" : "red"} />
-                  </span>
-
                   <span className="text-uppercase text-decoration-underline">
                     {user.name}
                   </span>
+                  {" "}
+                  {is_verified && (
+                    <Icon name="BadgeCheck" color="#0077ff" />
+                  )}
 
                 </td>
                 <td>
