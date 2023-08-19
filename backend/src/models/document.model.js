@@ -1,10 +1,25 @@
 const mongoose = require('mongoose');
 
 const documentSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    fileUrl: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now }
+    aadhar: {
+        aadhar_no: {
+            type: String
+        },
+        aadharFilePath: {
+            type: String
+        }
+    },
+    pancard: {
+        pancard_no: {
+            type: String
+        },
+        pancardFilePath: {
+            type: String
+        }
+
+    }
 });
+
 
 const Document = mongoose.model('Document', documentSchema);
 
