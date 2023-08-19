@@ -20,6 +20,11 @@ const Header = () => {
       show: isLoggedIn || !isLoggedIn
     },
     {
+      title: "Dashboard",
+      href: "/dashboard",
+      show: isLoggedIn
+    },
+    {
       title: "Signup",
       href: "/auth/create",
       show: !isLoggedIn
