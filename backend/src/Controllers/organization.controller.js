@@ -91,10 +91,10 @@ module.exports.verifyTeacher = async (req, res) => {
 // Get departments of the organization
 module.exports.getDepartments = async (req, res) => {
     try {
+        console.log(res.organization)
         if (req.user.userType === 1) {
-            const org = await Organization.findOne({ user: req.user._id });
             // Retrieve departments of the organization
-            const departments = await Department.find({ organization: org._id }, { name: true });
+            const departments = await Department.find({ organization: req.org._id } );
             res.send(Response(false, "", departments));
         } else {
             throw "Access Denied";
