@@ -2,6 +2,18 @@ const { Department, Teacher, Subject } = require("../models/department.model");
 const { Response } = require("../services/services");
 
 
+// Get departments of the organization by organization_id 
+module.exports.getOrganizationDepartmentsList = async (req, res) => {
+    try {
+        // Retrieve departments of the organization
+        const departments = await Department.find({ organization: req.body.organization_id }, { name: true });
+        res.send(Response(false, "", departments));
+    } catch (error) {
+        res.send(Response(true, error));
+    }
+};
+
+
 module.exports.assignSubject = async (req, res) => {
     try {
         if (req.user.userType === 2 && req.teacher.is_hod === true) {
@@ -16,7 +28,7 @@ module.exports.assignSubject = async (req, res) => {
             } else {
                 throw "Enter a valid data ";
             }
-        }else{
+        } else {
             throw "Access Denied";
         }
     } catch (error) {
