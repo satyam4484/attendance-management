@@ -1,5 +1,4 @@
 import React, { createContext, useReducer, useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { globalReducer, initialState } from "../reducers/GlobalReducer";

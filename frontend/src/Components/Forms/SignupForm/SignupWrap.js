@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Row, Col, Button, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useGlobalContext } from "../../../context/Context";
-import { createUser, generateOtp } from "../../../network/agent";
+import { createUser, generateOtp, getAllOrganizations, getOrganizationDepartmentsList } from "../../../network/agent";
 import BasicInputField from "./BasicInputField";
 import ContactInputField from "./ContactInputField";
 import OtpForm from "../OtpForm";
@@ -32,6 +32,38 @@ const SignupWrap = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [generatedUserId, setGeneratedUserId] = useState(null);
+
+  const [organizations, setOrganizations] = useState([]);
+  const [departments, setDepartments] = useState([]);
+  const [selectedOrganization, setSelectedOrganization] = useState('');
+  const [selectedDepartment, setSelectedDepartment] = useState('');
+
+  useEffect(() => {
+    if (userType.value === 2 || userType.value === 3) {
+      const fetchOrganizations = async () => {
+        try {
+          const response = await getAllOrganizations();
+          setOrganizations(response.data);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchOrganizations();
+    }
+  }, [userType.value]);
+
+  const handleOrganizationChange = (event) => {
+    setSelectedOrganization(event.target.value);
+
+    // Fetch departments based on selected organization
+    getOrganizationDepartmentsList({ organization_id: event.target.value })
+      .then((response) => {
+        setDepartments(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   const handleModalOpen = () => {
     setShowModal(true);
@@ -70,6 +102,7 @@ const SignupWrap = () => {
       address: address.value,
       password: password.value,
       confirmPassword: confirmPassword.value,
+      department: selectedDepartment
     };
 
     toggleSpinner();
@@ -119,7 +152,7 @@ const SignupWrap = () => {
               <Form onSubmit={handleSubmit}>
                 <Row className="g-4 p-2">
                   <Col md={6}>
-                    <BasicInputField />
+                    <BasicInputField departments={departments} setSelectedDepartment={setSelectedDepartment} selectedDepartment={selectedDepartment} organizations={organizations} handleOrganizationChange={handleOrganizationChange} selectedOrganization={selectedOrganization} />
                   </Col>
 
                   <Col md={6}>

@@ -10,6 +10,10 @@ export const createUser = (data) => {
     return axiosClient().post('user/create', JSON.stringify(data)).then(response => response.data);
 }
 
+export const getOrganizationDepartmentsList = (data) => {
+    return axiosClient().post('department/organization-departments', JSON.stringify(data)).then(response => response.data);
+}
+
 // OTP related services 
 
 export const generateOtp = (data) => {

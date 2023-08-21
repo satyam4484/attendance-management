@@ -6,8 +6,7 @@ import Input from '../Units/Input';
 import { useSignupContext } from '../../../context/SignupContext';
 import { userTypeOptions } from '../../Services/appdata';
 
-
-const BasicInputField = () => {
+const BasicInputField = ({ departments, setSelectedDepartment, selectedDepartment, organizations, handleOrganizationChange, selectedOrganization }) => {
 
     const { name, email, password, confirmPassword, userType, onBlurHandler, onFocusHandler, valueChangeHandler, userTypeHandler } = useSignupContext();
 
@@ -75,6 +74,8 @@ const BasicInputField = () => {
         },
     ]
 
+
+
     return (
         <>
             {inputFields.map(field => (
@@ -133,16 +134,39 @@ const BasicInputField = () => {
                     </option>
                 ))}
             </select>
-            {/* 
-            
-            if userType selected as teacher 2 & student 3 then
-                show select field and select organizations (only show verified organizations)
-            after selecting organization
-                show select field and select departments
-            
-            SEND Only Department in form data
+            {userType.value === 2 || userType.value === 3 ? (
+                <select
+                    className="custom-select"
+                    id="organization"
+                    name="organization"
+                    value={selectedOrganization}
+                    onChange={handleOrganizationChange}
+                >
+                    <option value="" className="text-uppercase">Select Organization</option>
+                    {organizations.map((org) => (
+                        <option key={org._id} value={org._id} className="text-uppercase custom-option">
+                            {org.user.name}
+                        </option>
+                    ))}
+                </select>
+            ) : null}
 
-             */}
+            {departments.length > 0 ? (
+                <select
+                    className="custom-select"
+                    id="department"
+                    name="department"
+                    value={selectedDepartment}
+                    onChange={(e) => setSelectedDepartment(e.target.value)}
+                >
+                    <option value="">Select Department</option>
+                    {departments.map((dept) => (
+                        <option key={dept._id} value={dept._id} className="custom-option">
+                            {dept.name}
+                        </option>
+                    ))}
+                </select>
+            ) : null}
         </>
     )
 }
