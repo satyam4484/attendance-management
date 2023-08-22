@@ -47,3 +47,13 @@ export const verifyOrganization = (data) => {
 export const deleteUser = (data) => {
     return axiosClient().post('user', JSON.stringify(data)).then(response => response.data);
 }
+
+// organization services
+
+export const getDepartments = () => {
+    return axiosClient().get('organization/departments-list').then(response => response.data);
+}
+
+export const createDepartment = (data) => {
+    return axiosClient().post('department', JSON.stringify(data)).then(response => response.data);
+}

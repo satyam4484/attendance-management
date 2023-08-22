@@ -135,20 +135,26 @@ const BasicInputField = ({ departments, setSelectedDepartment, selectedDepartmen
                 ))}
             </select>
             {userType.value === 2 || userType.value === 3 ? (
-                <select
-                    className="custom-select"
-                    id="organization"
-                    name="organization"
-                    value={selectedOrganization}
-                    onChange={handleOrganizationChange}
-                >
-                    <option value="" className="text-uppercase">Select Organization</option>
-                    {organizations.map((org) => (
-                        <option key={org._id} value={org._id} className="text-uppercase custom-option">
-                            {org.user.name}
-                        </option>
-                    ))}
-                </select>
+                <div>
+                    <select
+                        className="custom-select text-capitalize"
+                        id="organization"
+                        name="organization"
+                        value={selectedOrganization}
+                        onChange={handleOrganizationChange}
+                    >
+                        <option value="">Select Organization</option>
+                        {organizations.map((org) => (
+                            <option key={org._id} value={org._id} className="text-uppercase custom-option">
+                                {org.user.name}
+                            </option>
+                        ))}
+                    </select>
+
+                    {selectedOrganization && departments.length === 0 && (
+                        <p className="text-danger text-capitalize ps-3 pe-0 pb-0 pt-0 m-0" style={{ fontSize: "12px" }}>No departments found! <br /> Please contact organization for departments!</p>
+                    )}
+                </div>
             ) : null}
 
             {departments.length > 0 ? (

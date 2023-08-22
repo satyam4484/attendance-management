@@ -5,12 +5,12 @@ import Admin from "./Admin/Admin";
 import Organization from "./Organization/Organization"
 import Teacher from "./Teachers/Teacher";
 import Student from "./Students/Student";
+import { Container } from 'react-bootstrap';
 
 const DashBoard = () => {
   const { isLoggedIn, setMessage, userCred } = useGlobalContext();
   const navigate = useNavigate();
 
-  console.log(userCred);
   useEffect(() => {
     if (!isLoggedIn) {
       navigate("/auth/login");
@@ -27,12 +27,12 @@ const DashBoard = () => {
     }
   };
   return (
-    <>
+    <Container fluid>
       {userCred.userType === 0 && <Admin />}
       {userCred.userType === 1 && <Organization />}
       {userCred.userType === 2 && <Teacher />}
       {userCred.userType === 3 && <Student />}
-    </>
+    </Container>
   )
 }
 

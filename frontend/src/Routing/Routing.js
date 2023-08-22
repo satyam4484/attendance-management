@@ -5,7 +5,8 @@ const Spinner = lazy(() => import('../Components/UI/Loading'));
 const Homepage = lazy(() => import('../Components/UI/Homepage'));
 const SignUp = lazy(() => import('../Components/Forms/SignupForm/Signup'));
 const SignIn = lazy(() => import('../Components/Forms/SigninForm/Signin'));
-const DashBoard = lazy(()=> import('../Components/DashBoard/DashBoard'));
+const DashBoard = lazy(() => import('../Components/DashBoard/DashBoard'));
+const AllTeachers = lazy(() => import('../Components/DashBoard/Organization/AllTeachers'));
 
 
 const Routing = () => {
@@ -17,7 +18,8 @@ const Routing = () => {
           <Route path="create" element={<SignUp />} />
           <Route path="login" element={<SignIn />} />
         </Route>
-        <Route path="/dashboard" element={<DashBoard/>}/>
+        <Route path="/dashboard" element={<DashBoard />} />
+        <Route path="/teachers" element={<AllTeachers />} />
       </Routes>
     </Suspense>
   );
