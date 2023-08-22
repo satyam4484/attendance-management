@@ -10,6 +10,10 @@ export const createUser = (data) => {
     return axiosClient().post('user/create', JSON.stringify(data)).then(response => response.data);
 }
 
+export const getOrganizationDepartmentsList = (data) => {
+    return axiosClient().post('department/organization-departments', JSON.stringify(data)).then(response => response.data);
+}
+
 // OTP related services 
 
 export const generateOtp = (data) => {
@@ -42,4 +46,14 @@ export const verifyOrganization = (data) => {
 
 export const deleteUser = (data) => {
     return axiosClient().post('user', JSON.stringify(data)).then(response => response.data);
+}
+
+// organization services
+
+export const getDepartments = () => {
+    return axiosClient().get('organization/departments-list').then(response => response.data);
+}
+
+export const createDepartment = (data) => {
+    return axiosClient().post('department', JSON.stringify(data)).then(response => response.data);
 }

@@ -1,5 +1,4 @@
 import React, { createContext, useReducer, useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { globalReducer, initialState } from "../reducers/GlobalReducer";
@@ -31,6 +30,10 @@ const AppProvider = ({ children }) => {
     toast[type](message); // shows toast message
   }
 
+  const getOrganizationId = (data) => {
+    dispatch({ type: "GET_ORGANIZATION_ID", payload: data });
+  }
+
   // Function to log in a user
   const loginUser = (data) => {
     dispatch({ type: "LOGIN_USER", payload: data });
@@ -39,7 +42,7 @@ const AppProvider = ({ children }) => {
   // Function to log out a user
   const logoutUser = () => {
     dispatch({ type: "LOGOUT_USER" });
-    
+
   };
 
   return (
@@ -50,7 +53,8 @@ const AppProvider = ({ children }) => {
       toggleSpinner,
       setMessage,
       loginUser,
-      logoutUser
+      logoutUser,
+      getOrganizationId
     }}>
       {children}
     </AppContext.Provider>
